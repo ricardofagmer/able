@@ -1,0 +1,65 @@
+export const tokens = {
+  colors: {
+    primary: '#162b3f',
+    secondary: '#97dffc',
+    success: 'hsl(142 76% 36%)',
+    warning: 'hsl(38 92% 50%)',
+    destructive: 'hsl(0 84.2% 60.2%)',
+    muted: 'hsl(210 40% 96.1%)',
+    background: 'hsl(210 33% 98%)',
+    foreground: 'hsl(222.2 84% 4.9%)',
+  },
+  spacing: {
+    xs: '0.25rem',
+    sm: '0.5rem',
+    md: '1rem',
+    lg: '1.5rem',
+    xl: '2rem',
+    '2xl': '3rem',
+  },
+  typography: {
+    fontFamily: {
+      sans: ['AvenirNextLTPro-Regular', 'sans-serif'],
+      heading: ['AvenirNextLTPro-Bold', 'sans-serif'],
+    },
+    fontSize: {
+      xs: '0.75rem',
+      sm: '0.875rem',
+      base: '1rem',
+      lg: '1.125rem',
+      xl: '1.25rem',
+      '2xl': '1.5rem',
+      '3xl': '1.875rem',
+      '4xl': '2.25rem',
+    },
+    fontWeight: {
+      normal: '400',
+      medium: '500',
+      bold: '700',
+    },
+    lineHeight: {
+      tight: '1.25',
+      normal: '1.5',
+      relaxed: '1.75',
+    },
+  },
+  borderRadius: {
+    sm: 'calc(var(--radius) - 4px)',
+    md: 'calc(var(--radius) - 2px)',
+    lg: 'var(--radius)',
+  },
+  shadows: {
+    sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+    md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+    lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+  },
+  zIndices: {
+    base: 0,
+    dropdown: 1000,
+    sticky: 1100,
+    fixed: 1200,
+    modal: 1300,
+    popover: 1400,
+    tooltip: 1500,
+  },
+}

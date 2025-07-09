@@ -1,0 +1,28 @@
+{
+    "name": "i18n-shared",
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "libs/i18n-shared/src",
+    "projectType": "library",
+    "tags": [],
+    "targets": {
+        "build": {
+            "executor": "@nx/js:tsc",
+            "outputs": [
+                "{options.outputPath}"
+            ],
+            "options": {
+                "outputPath": "dist/libs/i18n-shared/src/libs/i18n",
+                "main": "libs/i18n-shared/src/index.ts",
+                "tsConfig": "libs/i18n-shared/tsconfig.lib.json",
+                "assets": [
+                    "libs/i18n-shared/src/libs/i18n/*",
+                    {
+                        "glob": "**/*",
+                        "input": "libs/i18n-shared/src/libs/i18n",
+                        "output": "./"
+                    }
+                ]
+            }
+        }
+    }
+}

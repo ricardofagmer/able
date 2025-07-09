@@ -1,0 +1,102 @@
+name: Deploy API Gateway Service
+
+on:
+    push:
+        branches:
+            - dev
+        paths:
+            - 'apps/api/api-gateway/**'
+            - 'docker/Gateway.Dockerfile'
+            - 'migrations/**'
+            - 'k8s/gateway-deployment-api.yml'
+            - '.github/workflows/docker-image-gateway.yml'
+            - 'libs/**'
+    workflow_dispatch:
+
+concurrency:
+    group: gateway-service-deploy-${{ github.ref }}
+    cancel-in-progress: false
+
+env:
+    ENVIRONMENT: test
+    KUBECONFIG64: ${{ secrets.KUBECONFIG64 }}
+    NODE_OPTIONS: "--max-old-space-size=4096"
+
+jobs:
+    deploy-gateway:
+        runs-on: ubuntu-latest
+        environment: test
+        name: dev
+        permissions:
+            contents: 'read'
+            id-token: 'write'
+        env:
+            IMAGE_NAME: gcr.io/able-dev/gateway:v${{ github.run_number }}
+            RELEASE: gateway-service-test
+            IMAGE_TAG: v${{ github.run_number }}
+            GKE_CLUSTER: able-test-cluster
+            GKE_ZONE: us-central1-a
+        steps:
+            -   name: Checkout code
+                uses: actions/checkout@v4
+
+            -   name: Authenticate to Google Cloud
+                uses: google-github-actions/auth@v2
+                with:
+                    credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
+            -   name: Setup Google Cloud SDK
+                uses: google-github-actions/setup-gcloud@v2
+                with:
+                    project_id: ${{ vars.GCP_PROJECT_ID }}
+
+            -   name: Configure Docker for Google Container Registry
+                run: gcloud endpoint configure-docker gcr.io --quiet
+
+            -   name: Login to GitHub Container Registry
+                uses: docker/login-action@v3
+                with:
+                    registry: ghcr.io
+                    username: ${{ secrets.REGISTRY_USERNAME }}
+                    password: ${{ secrets.REGISTRY_PASSWORD }}
+
+            -   name: Build Docker image
+                run: docker build -f docker/Gateway.Dockerfile --build-arg MODE=production -t $IMAGE_NAME .
+
+            -   name: Push Docker image
+                run: docker push $IMAGE_NAME
+
+            -   name: Set up kubectl and get cluster credentials
+                run: |
+                    gcloud components install gke-gcloud-auth-plugin
+                    export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+                    gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project ${{ vars.GCP_PROJECT_ID }}
+
+            -   name: Create or update GCR image pull secret
+                run: |
+                    kubectl create secret docker-registry gcr-json-key \
+                      --docker-server=gcr.io \
+                      --docker-username=_json_key \
+                      --docker-password='${{ secrets.GCP_CREDENTIALS }}' \
+                      --docker-email=github-actions@example.com \
+                      --namespace=$NAMESPACE \
+                      --dry-run=client -o yaml | kubectl apply -f -
+
+            -   name: Replace image tag in deployment file
+                run: |
+                    sed "s|TAG|v${{ github.run_number }}|g" k8s/gateway-deployment-api.yml > k8s/gateway-deployment-api-temp.yml
+
+            -   name: Debug kubectl context and permissions
+                run: |
+                    kubectl config current-context
+                    kubectl auth whoami
+                    kubectl auth can-i get secrets -n able-dev
+                    kubectl get namespaces
+
+            -   name: Deploy to Kubernetes
+                run: |
+                    kubectl apply -f k8s/values-secret-production.yml --validate=false
+                    kubectl apply -f k8s/values-production.yml --validate=false
+                    kubectl apply -f k8s/gateway-deployment-api-temp.yml --validate=false
+                    kubectl apply -f k8s/gateway-service-api.yml
+

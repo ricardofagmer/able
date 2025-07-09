@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+    name: auth-microservice
+    namespace: able-dev
+
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: auth-microservice
+    template:
+        metadata:
+            labels:
+                app: auth-microservice
+        spec:
+            imagePullSecrets:
+                -   name: gcr-json-key
+            containers:
+                - name: endpoint-microservice
+                  image: gcr.io/able-dev/auth:TAG
+                  imagePullPolicy: Always
+                  envFrom:
+                      -   configMapRef:
+                              name: app-service-config
+                      -   secretRef:
+                              name: app-service-secrets
+                  ports:
+                      - containerPort: 3001
+                  resources:
+                      requests:
+                          memory: "128Mi"
+                          cpu: "100m"
+                      limits:
+                          memory: "256Mi"
+                          cpu: "200m"
+                  env:
+                      - name: NODE_ENV
+                        value: "production"

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: kafka-controller-configuration
+data:
+    server.properties: |
+        # Basic Kafka configuration
+        broker.id=1
+        process.roles=broker,controller
+        controller.quorum.voters=1@127.0.0.1:9093
+        listeners=PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:29092
+        advertised.listeners=PLAINTEXT://kafka:9092,EXTERNAL://kafka-external:29092
+        listener.security.protocol.map=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+        controller.listener.names=CONTROLLER
+        inter.broker.listener.name=PLAINTEXT
+        auto.create.topics.enable=true

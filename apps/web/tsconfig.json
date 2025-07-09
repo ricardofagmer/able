@@ -1,0 +1,60 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "preserve",
+    "allowJs": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "target": "ES2022",
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "lib": [
+      "esNext",
+      "dom"
+    ],
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "useDefineForClassFields": true,
+    "skipDefaultLibCheck": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": true,
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./app/*"],
+      "@able/api-shared": ["../../libs/api-shared/src/index.ts"],
+      "@able/common": ["../../libs/common/src/index.ts"],
+      "@able/data-access": ["../../libs/data-access/src/index.ts"],
+      "@able/i18n-shared": ["../../libs/i18n-shared/src/index.ts"],
+      "@able/migrations": ["../../migrations/index.ts"]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "incremental": true
+  },
+  "include": [
+    "**/*.js",
+    "**/*.jsx",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "next-env.d.ts",
+    "../../dist/apps/web/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "jest.config.ts",
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "**/*.spec.tsx",
+    "**/*.test.tsx"
+  ]
+}

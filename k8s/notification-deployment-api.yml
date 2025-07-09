@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: notification-microservice
+    namespace: able-dev
+    labels:
+        app: notification-microservice
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: notification-microservice
+    template:
+        metadata:
+            labels:
+                app: notification-microservice
+        spec:
+            imagePullSecrets:
+                -   name: gcr-json-key
+            containers:
+                -   name: notification-microservice
+                    image: gcr.io/able-dev/notification:TAG
+                    imagePullPolicy: Always
+                    envFrom:
+                    -   configMapRef:
+                         name: app-service-config
+                    -   secretRef:
+                         name: app-service-secrets
+                    resources:
+                        limits:
+                            cpu: "500m"
+                            memory: "512Mi"
+                        requests:
+                            cpu: "200m"
+                            memory: "256Mi"
+                    terminationMessagePath: /dev/termination-log
+                    terminationMessagePolicy: File
+            restartPolicy: Always
+            terminationGracePeriodSeconds: 30
+            dnsPolicy: ClusterFirst
+            securityContext: { }
+            schedulerName: default-scheduler
+    strategy:
+        type: RollingUpdate
+        rollingUpdate:
+            maxUnavailable: 25%
+            maxSurge: 25%
+    revisionHistoryLimit: 10
+    progressDeadlineSeconds: 600

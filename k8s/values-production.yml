@@ -1,0 +1,78 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: app-service-config
+    namespace: able-dev
+data:
+    NODE_ENV: production
+    ABLE_ENV: production
+    MASTER_NODE: "0"
+    PROJECT_NAME: able
+
+    WEB_HOST: https://app.able.com.br/
+    API_GATEWAY_HOST: https://app.able.com.br/api/
+    API_HOST: https://app.able.com.br/api/
+    API_GATEWAY_PORT: "3000"
+
+    DB_HOST: postgres-postgresql
+    DB_TYPE: postgres
+    DB_NAME: able
+    DB_USERNAME: able
+    DB_PORT: "5432"
+    DB_SCHEMA: public
+    DB_LOGGING: "false"
+    DB_SYNCHRONIZE: "true"
+
+    REDIS_DB_HOST: localhost
+    REDIS_DB_PORT: "6379"
+    REDIS_DB_NUM: "1"
+    REDIS_DB_KEY_PREFIX: ''
+    REDIS_TTL: "3600"
+
+    GCP_BUCKET_NAME: able-dev
+    GCP_PROJECT_ID: able-dev
+    GCP_PRIVATE_KEY_ID: 435dc1c9632baf3371557ab299a38bdc0c556aa3
+    GCP_CLIENT_EMAIL: able-dev@able-dev.iam.gserviceaccount.com
+    GCP_CLIENT_ID: "111516114977338879637"
+    GCP_TOKEN_URI: https://oauth2.googleapis.com/token
+    GCP_PROVIDER_X509_CERT_URL: https://www.googleapis.com/oauth2/v1/certs
+    GCP_AUTH_CLIENT_X509_CERT_URL: https://www.googleapis.com/robot/v1/metadata/x509/able-dev%40able-dev.iam.gserviceaccount.com
+    GCP_AUTH_URI: https://accounts.google.com/o/oauth2/auth
+    GCP_UNIVERSE_DOMAIN: googleapis.com
+
+    # Kafka
+    KAFKA_CLIENT_BROKERS: kafka:9092
+    KAFKA_SSL: "false"
+    KAFKA_SASL_USERNAME: ''
+    KAFKA_SASL_PASSWORD: ''
+
+    # i18n
+    DEFAULT_LANGUAGE: pt-br
+
+    # Mailer
+    MAIL_HOST: smtp.gmail.com
+    MAIL_PORT: "587"
+    MAIL_TRANSPORT: gmail
+    MAIL_SECURE: "false"
+    MAIL_USER: ricardofagmer@gmail.com
+    MAIL_FROM_NAME: 'Ricardo able Test'
+    MAIL_FROM_ADDRESS: ricardofagmer@gmail.com
+
+    # JWT
+    JWT_EXPIRES_IN: 3600s
+    JWT_REFRESH_EXPIRES_IN: 7d
+
+    # APP
+    THROTTLER_TTL: "10000"
+    THROTTLER_LIMIT: "65535"
+    IS_PUBLIC: "false"
+    APP_KEY: able
+    USER_PASSWORD_HASH_ROUNDS: "123456"
+
+    # APP Services
+    DEFAULT_HOST_AUTH: 'endpoint-service'
+    DEFAULT_PORT_AUTH: '3001'
+    DEFAULT_HOST_STORAGE: 'storage-service'
+    DEFAULT_PORT_STORAGE: '3002'
+
+    I18N_PATH: /dist/i18n-shared/src/libs/i18n/

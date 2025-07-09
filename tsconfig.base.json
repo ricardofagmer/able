@@ -1,0 +1,27 @@
+{
+    "compileOnSave": false,
+    "compilerOptions": {
+        "rootDir": ".",
+        "sourceMap": true,
+        "declaration": false,
+        "moduleResolution": "node",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "importHelpers": true,
+        "target": "es2021",
+        "module": "esnext",
+        "lib": ["es2015", "es2016", "es2017", "es2021"],
+        "skipLibCheck": true,
+        "skipDefaultLibCheck": true,
+        "strictPropertyInitialization": false,
+        "baseUrl": ".",
+        "paths": {
+            "@able/api-shared": ["libs/api-shared/src/index.ts"],
+            "@able/common": ["libs/common/src/index.ts"],
+            "@able/data-access": ["libs/data-access/src/index.ts"],
+            "@able/i18n-shared": ["libs/i18n-shared/src/index.ts"],
+            "@able/migrations": ["migrations/index.ts"]
+        }
+    },
+    "exclude": ["node_modules", "tmp"]
+}
