@@ -34,8 +34,8 @@ async function bootstrap() {
         })
     );
 
-    await app.listen(3001);
-    Logger.verbose(`[::API::] HTTP running on 3001 ✅`);
+    await app.listen(3000);
+    Logger.verbose(`[::API::] HTTP running on 3000 ✅`);
 
 }
 

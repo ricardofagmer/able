@@ -117,7 +117,7 @@ export default function UsersListPage() {
             });
 
             // Handle permission changes
-            const currentPermissionIds = Array.isArray(editingUser.permissions) ? editingUser.permissions.map(p => p.id) : [];
+            const currentPermissionIds = Array.isArray(editingUser.permissions) ? editingUser.permissions.map(p => p.id.toString()) : [];
             const newPermissionIds = editForm.selectedPermissions;
 
             // Remove permissions that are no longer selected
@@ -553,8 +553,8 @@ export default function UsersListPage() {
                                                         <div key={permission.id} className="flex items-center space-x-2">
                                                             <Checkbox
                                                                 id={`edit-permission-${permission.id}`}
-                                                                checked={editForm.selectedPermissions.includes(permission.id)}
-                                                                onCheckedChange={() => handleEditPermissionToggle(permission.id)}
+                                                                checked={editForm.selectedPermissions.includes(permission.id.toString())}
+                                                                onCheckedChange={() => handleEditPermissionToggle(permission.id.toString())}
                                                             />
                                                             <div className="flex-1 min-w-0">
                                                                 <div className="text-sm font-medium text-gray-900 truncate">
@@ -573,12 +573,12 @@ export default function UsersListPage() {
                                                 <h4 className="text-sm font-medium text-gray-700 mb-2">Selecionadas</h4>
                                                 <div className="space-y-2 max-h-52 overflow-y-auto">
                                                     {editForm.selectedPermissions.map((permissionId) => {
-                                                        const permission = availablePermissions.find(p => p.id === permissionId);
+                                                        const permission = availablePermissions.find(p => p.id.toString() === permissionId);
                                                         return permission ? (
                                                             <div key={permission.id} className="flex items-center space-x-2">
                                                                 <Checkbox
                                                                     checked={true}
-                                                                    onCheckedChange={() => handleEditPermissionToggle(permission.id)}
+                                                                    onCheckedChange={() => handleEditPermissionToggle(permission.id.toString())}
                                                                 />
                                                                 <div className="flex-1 min-w-0">
                                                                     <div className="text-sm font-medium text-gray-900 truncate">
