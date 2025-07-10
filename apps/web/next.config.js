@@ -18,11 +18,8 @@ const nextConfig = {
   },
   experimental: {
     forceSwcTransforms: true,
-    turbo: true,
   },
-  nx: {
-    svgr: true,
-  },
+  turbopack: {},
   webpack: (config, { isServer, webpack }) => {
     config.module = config.module || {};
     config.module.rules = config.module.rules || [];

@@ -28,7 +28,7 @@ export default function EndpointsListPage() {
     const [editingEndpoint, setEditingEndpoint] = useState<Endpoint | null>(null);
     const [editForm, setEditForm] = useState({ name: '', value: '', deactivatedAt: '' });
 
-    const [, {fetchAll, update, remove}] = useResource(endpointDataAccess);
+    const [, {fetchAll, update, remove}] = useResource(endpointDataAccess as any);
 
 
     useEffect(() => {

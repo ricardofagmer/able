@@ -71,7 +71,7 @@ export default function PermissionsPage() {
   const [availableEndpoints, setAvailableEndpoints] = useState<Endpoint[]>([]);
   const [availableUsers, setAvailableUsers] = useState<User[]>([]);
 
-  const [, { create, update, fetchAll, remove }] = useResource(permissionDataAccess);
+  const [, { create, update, fetchAll, remove }] = useResource(permissionDataAccess as any);
 
   useEffect(() => {
     loadPermissions();

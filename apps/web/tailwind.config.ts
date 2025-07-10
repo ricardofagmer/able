@@ -1,5 +1,4 @@
 import type { Config } from "tailwindcss";
-import { tokens } from "./app/design-system/tokens";
 
 export default {
     darkMode: ["class"],
@@ -62,13 +61,6 @@ export default {
                     foreground: "hsl(var(--card-foreground))",
                 },
             },
-            borderRadius: tokens.borderRadius,
-            boxShadow: tokens.shadows,
-            fontFamily: tokens.typography.fontFamily,
-            fontSize: tokens.typography.fontSize,
-            fontWeight: tokens.typography.fontWeight,
-            lineHeight: tokens.typography.lineHeight,
-            zIndex: tokens.zIndices,
             keyframes: {
                 "accordion-down": {
                     from: { height: "0" },

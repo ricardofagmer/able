@@ -58,7 +58,7 @@ export default function UsersListPage() {
     const [permissionSearch, setPermissionSearch] = useState('');
     const [editPermissionSearch, setEditPermissionSearch] = useState('');
 
-    const [, { fetchAll, update, remove, create }] = useResource(userDataAccess);
+    const [, { fetchAll, update, remove, create }] = useResource(userDataAccess as any);
     const [availablePermissions, setAvailablePermissions] = useState<any[]>([]);
 
     const loadData = useCallback(async () => {

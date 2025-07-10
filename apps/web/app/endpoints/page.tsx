@@ -21,7 +21,7 @@ export default function EndpointsPage() {
     name: '',
     value: ''
   });
-  const [, { create }] = useResource(endpointDataAccess);
+  const [, { create }] = useResource(endpointDataAccess as any);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (field: keyof EndpointFormData, value: string) => {
