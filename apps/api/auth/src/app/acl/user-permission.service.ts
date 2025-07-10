@@ -30,9 +30,12 @@ export class UserPermissionService {
       throw new Error(`Permission with ID ${permissionId} not found`);
     }
 
+    // Convert userId to string for UserPermission entity (varchar field)
+    const userIdStr = userId.toString();
+
     // Check if relationship already exists
     const existingRelation = await this.userPermissionRepository.findOne({
-      where: { userId, permissionId },
+      where: { userId: +userIdStr, permissionId: permissionId },
     });
 
     if (existingRelation) {
@@ -41,7 +44,7 @@ export class UserPermissionService {
 
     // Create new user-permission relationship
     const userPermission = this.userPermissionRepository.create({
-      userId,
+      userId: +userIdStr, // Store as string since entity field is varchar
       permissionId,
     });
 
@@ -52,9 +55,12 @@ export class UserPermissionService {
    * Remove a permission from a user
    */
   async removePermissionFromUser(userId: string, permissionId: number): Promise<void> {
+
+      console.log('really?',userId, permissionId)
+
     const result = await this.userPermissionRepository.delete({
-      userId: Number(userId),
-      permissionId: Number(permissionId),
+      userId: +userId, // Keep as string since the entity field is varchar
+      permissionId: permissionId,
     });
 
     if (result.affected === 0) {
@@ -67,7 +73,7 @@ export class UserPermissionService {
    */
   async getUserPermissions(userId: string): Promise<Permission[]> {
     const userPermissions = await this.userPermissionRepository.find({
-      where: { userId: Number(userId) },
+      where: { userId: +userId }, // Keep as string since the entity field is varchar
       relations: ['permission'],
     });
 
@@ -91,7 +97,7 @@ export class UserPermissionService {
    */
   async userHasPermission(userId: string, permissionId: number): Promise<boolean> {
     const userPermission = await this.userPermissionRepository.findOne({
-      where: { userId: Number(userId), permissionId },
+      where: { userId: +userId, permissionId }, // Keep userId as string
     });
 
     return !!userPermission;
@@ -135,7 +141,7 @@ export class UserPermissionService {
    * Remove all permissions from a user
    */
   async removeAllPermissionsFromUser(userId: string): Promise<void> {
-    await this.userPermissionRepository.delete({ userId: Number(userId) });
+    await this.userPermissionRepository.delete({ userId: +userId }); // Keep as string
   }
 
   /**
@@ -147,7 +153,7 @@ export class UserPermissionService {
     limit: number = 10
   ): Promise<{ permissions: Permission[]; total: number; page: number; limit: number }> {
     const [userPermissions, total] = await this.userPermissionRepository.findAndCount({
-      where: { userId: Number(userId) },
+      where: { userId: +userId }, // Keep as string
       relations: ['permission'],
       skip: (page - 1) * limit,
       take: limit,

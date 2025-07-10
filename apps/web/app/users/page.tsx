@@ -109,30 +109,15 @@ export default function UsersListPage() {
         if (!editingUser) return;
 
         try {
-            // Update user basic info
+            // Update user with all data including permissions
             const updatedUser = await update(editingUser.id, {
                 name: editForm.name,
                 email: editForm.email,
-                isActive: editForm.isActive
+                isActive: editForm.isActive,
+                permissions: editForm.selectedPermissions.map(id => ({ id: Number(id) }))
             });
 
-            // Handle permission changes
-            const currentPermissionIds = Array.isArray(editingUser.permissions) ? editingUser.permissions.map(p => p.id.toString()) : [];
-            const newPermissionIds = editForm.selectedPermissions;
-
-            // Remove permissions that are no longer selected
-            const permissionsToRemove = currentPermissionIds.filter(id => !newPermissionIds.includes(id));
-            for (const permissionId of permissionsToRemove) {
-                await permissionDataAccess.removePermissionFromUser(editingUser.id.toString(), Number(permissionId));
-            }
-
-            // Add new permissions
-            const permissionsToAdd = newPermissionIds.filter(id => !currentPermissionIds.includes(id));
-            for (const permissionId of permissionsToAdd) {
-                await permissionDataAccess.assignPermissionToUser(editingUser.id.toString(), Number(permissionId));
-            }
-
-            // Fetch updated user with permissions
+            // Fetch updated user with permissions to get the complete data
             const updatedUserWithPermissions = await userDataAccess.getById(editingUser.id);
             const updatedPermissions = updatedUserWithPermissions?.permissions || [];
 

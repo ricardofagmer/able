@@ -13,6 +13,7 @@ import {
     Patch,
 } from "@nestjs/common";
 import { PermissionEndpointService } from "./permission-endpoint.service";
+import { UserPermissionService } from "./user-permission.service";
 import { Permission } from "@able/api-shared";
 
 interface CreatePermissionDto {
@@ -36,7 +37,8 @@ interface PermissionQueryDto {
 @Controller("permission")
 export class PermissionsController {
     constructor(
-        private readonly permissionEndpointService: PermissionEndpointService
+        private readonly permissionEndpointService: PermissionEndpointService,
+        private readonly userPermissionService: UserPermissionService
     ) {}
 
     /**
@@ -152,4 +154,6 @@ export class PermissionsController {
             limit,
         };
     }
+
+
 }

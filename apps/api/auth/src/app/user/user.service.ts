@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Inject, Injectable, NotFoundException} from '@nestjs/common';
+import {HttpException, HttpStatus, Inject, Injectable, NotFoundException} from '@nestjs/common';
 import {PasswordService} from '../auth/password.service';
 import {UserRepository} from './user.repository';
 import {ConfirmAccountDto, ResendConfirmationEmailDto, UserDto, UserResponseDto} from '@able/common';
@@ -63,8 +63,31 @@ export class UserService {
     async update(id: number, updateUserDto: any): Promise<any> {
         const data = await this.findOne(id);
 
+        // Handle permissions update if provided
+        if (updateUserDto.permissions !== undefined) {
+            const newPermissionIds = updateUserDto.permissions.map((p: any) => Number(p.id || p));
+            
+            // Get current permissions
+            const currentPermissions = await this.userPermissionService.getUserPermissions(id.toString());
+            const currentPermissionIds = currentPermissions.map(p => p.id);
+            
+            // Remove permissions that are no longer selected
+            const permissionsToRemove = currentPermissionIds.filter(id => !newPermissionIds.includes(id));
+            for (const permissionId of permissionsToRemove) {
+                await this.userPermissionService.removePermissionFromUser(id.toString(), permissionId);
+            }
+            
+            // Add new permissions
+            const permissionsToAdd = newPermissionIds.filter(id => !currentPermissionIds.includes(id));
+            for (const permissionId of permissionsToAdd) {
+                await this.userPermissionService.assignPermissionToUser(id, permissionId);
+            }
+            
+            // Remove permissions from updateUserDto to avoid trying to update it directly
+            delete updateUserDto.permissions;
+        }
+
         Object.assign(data, updateUserDto);
-        console.log(data)
         return this.userRepository.updateUser(id, data);
     }
 
@@ -91,9 +114,8 @@ export class UserService {
 
     async getAll(): Promise<any> {
         const users = await this.userRepository.findAll();
-        
-        // Fetch permissions for each user
-        const usersWithPermissions = await Promise.all(
+
+        return await Promise.all(
             users.map(async (user) => {
                 const permissions = await this.userPermissionService.getUserPermissions(user.id.toString());
                 return {
@@ -103,8 +125,6 @@ export class UserService {
                 };
             })
         );
-        
-        return usersWithPermissions;
     }
 
     async confirmAccount(request: ConfirmAccountDto): Promise<boolean> {

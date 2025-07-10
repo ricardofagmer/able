@@ -333,14 +333,6 @@ export default function EndpointsListPage() {
                                 />
                             </div>
 
-                            <div className="flex items-center space-x-2">
-                                <Switch
-                                    id="edit-active"
-                                    checked={!editForm.deactivatedAt}
-                                    onCheckedChange={(checked) => setEditForm(prev => ({ ...prev, isActive: checked }))}
-                                />
-                                <Label htmlFor="edit-active">Endpoint ativo</Label>
-                            </div>
                         </div>
 
                         <div className="flex justify-end space-x-2 mt-6">

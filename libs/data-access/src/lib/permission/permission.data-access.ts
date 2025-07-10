@@ -1,4 +1,4 @@
-import { ServerResourceService } from '../services/resource.service';
+import { ServerResourceService } from "../services/resource.service";
 
 export interface PermissionDto {
     id?: number;
@@ -33,9 +33,13 @@ export interface UpdatePermissionDto {
     selectedUsers?: string[];
 }
 
-class PermissionDataAccess extends ServerResourceService<PermissionDto, CreatePermissionDto, UpdatePermissionDto> {
+class PermissionDataAccess extends ServerResourceService<
+    PermissionDto,
+    CreatePermissionDto,
+    UpdatePermissionDto
+> {
     constructor() {
-        super('permission');
+        super("permission");
     }
 
     async getAll(options?: any): Promise<PermissionDto[]> {
@@ -43,46 +47,69 @@ class PermissionDataAccess extends ServerResourceService<PermissionDto, CreatePe
         if (!permissions) return [];
 
         // Transform the API response to match frontend expectations
-        return permissions.map(permission => ({
+        return permissions.map((permission) => ({
             ...permission,
-            selectedEndpoints: permission.permissaoEndpoints?.map(pe => pe.endpoint?.id?.toString()).filter((id): id is string => id !== undefined) || [],
-            selectedUsers: permission.userPermissions?.map(up => up.user?.id?.toString()).filter((id): id is string => id !== undefined) || []
+            selectedEndpoints:
+                permission.permissaoEndpoints
+                    ?.map((pe) => pe.endpoint?.id?.toString())
+                    .filter((id): id is string => id !== undefined) || [],
+            selectedUsers:
+                permission.userPermissions
+                    ?.map((up) => up.user?.id?.toString())
+                    .filter((id): id is string => id !== undefined) || [],
         })) as PermissionDto[];
-
     }
 
-    async assignPermissionToUser(userId: string, permissionId: number): Promise<any> {
-        return this.customEndpoint('POST', 'assign', {
+    async assignPermissionToUser(
+        userId: string,
+        permissionId: number
+    ): Promise<any> {
+        return this.customEndpoint("POST", "assign", {
             userId,
-            permissionId
+            permissionId,
         });
     }
 
-    async removePermissionFromUser(userId: string, permissionId: number): Promise<void> {
-        return this.customEndpoint('DELETE', `user-permissions/remove/${userId}/${permissionId}`);
-    }
+
 
     async getUserPermissions(userId: string): Promise<PermissionDto[]> {
-        return this.customEndpoint('GET', `user-permissions/user/${userId}`);
+        return this.customEndpoint("GET", `user-permissions/user/${userId}`);
     }
 
-    async assignPermissionToEndpoint(permissionId: number, endpointId: number): Promise<any> {
-        return this.customEndpoint('POST', 'acl/permission-endpoint-/assign', {
+    async assignPermissionToEndpoint(
+        permissionId: number,
+        endpointId: number
+    ): Promise<any> {
+        return this.customEndpoint("POST", "acl/permission-endpoint-/assign", {
             permissionId,
-            endpointId
+            endpointId,
         });
     }
 
-    async removePermissionFromEndpoint(permissionId: number, endpointId: number): Promise<void> {
-        return this.customEndpoint('DELETE', `acl/permission-endpoint-/remove/${permissionId}/${endpointId}`);
+    async removePermissionFromEndpoint(
+        permissionId: number,
+        endpointId: number
+    ): Promise<void> {
+        return this.customEndpoint(
+            "DELETE",
+            `acl/permission-endpoint-/remove/${permissionId}/${endpointId}`
+        );
     }
 
     async getEndpointsByPermission(permissionId: number): Promise<any[]> {
-        return this.customEndpoint('GET', `acl/permission-endpoint-/permission/${permissionId}/endpoints`);
+        return this.customEndpoint(
+            "GET",
+            `acl/permission-endpoint-/permission/${permissionId}/endpoints`
+        );
     }
 
-    async getPermissionsByEndpoint(endpointId: number): Promise<PermissionDto[]> {
-        return this.customEndpoint('GET', `acl/permission-endpoint-/endpoint/${endpointId}/permissions`);
+    async getPermissionsByEndpoint(
+        endpointId: number
+    ): Promise<PermissionDto[]> {
+        return this.customEndpoint(
+            "GET",
+            `acl/permission-endpoint-/endpoint/${endpointId}/permissions`
+        );
     }
 }
 
