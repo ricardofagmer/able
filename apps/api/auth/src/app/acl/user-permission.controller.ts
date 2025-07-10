@@ -17,7 +17,6 @@ import {
   UserPermissionResponseDto,
   UserHasPermissionResponseDto,
   GetUserPermissionsQueryDto,
-  UserPermissionsPaginatedResponseDto,
   CheckPermissionByValueDto,
 } from './dto/user-permission.dto';
 
@@ -25,9 +24,7 @@ import {
 export class UserPermissionController {
   constructor(private readonly userPermissionService: UserPermissionService) {}
 
-  /**
-   * Assign a permission to a user
-   */
+
   @Post('assign')
   @HttpCode(HttpStatus.CREATED)
   async assignPermissionToUser(
@@ -45,9 +42,6 @@ export class UserPermissionController {
     };
   }
 
-  /**
-   * Remove a permission from a user
-   */
   @Delete('remove/:userId/:permissionId')
   @HttpCode(HttpStatus.NO_CONTENT)
   async removePermissionFromUser(
@@ -57,25 +51,18 @@ export class UserPermissionController {
     await this.userPermissionService.removePermissionFromUser(userId, +permissionId);
   }
 
-  /**
-   * Get all permissions for a user
-   */
+
   @Get('user/:userId/permissions')
   async getUserPermissions(@Param('userId') userId: string) {
     return await this.userPermissionService.getUserPermissions(userId);
   }
 
-  /**
-   * Get all users with a specific permission
-   */
   @Get('permission/:permissionId/users')
   async getUsersWithPermission(@Param('permissionId') permissionId: number) {
     return await this.userPermissionService.getUsersWithPermission(+permissionId);
   }
 
-  /**
-   * Check if a user has a specific permission
-   */
+
   @Get('check/:userId/:permissionId')
   async userHasPermission(
     @Param('userId') userId: string,
@@ -89,9 +76,6 @@ export class UserPermissionController {
     return { hasPermission };
   }
 
-  /**
-   * Check if a user has a specific permission by permission value
-   */
   @Post('check-by-value')
   async userHasPermissionByValue(
     @Body() checkPermissionDto: CheckPermissionByValueDto
@@ -104,9 +88,7 @@ export class UserPermissionController {
     return { hasPermission };
   }
 
-  /**
-   * Assign multiple permissions to a user
-   */
+
   @Post('bulk-assign-to-user')
   @HttpCode(HttpStatus.CREATED)
   async assignMultiplePermissionsToUser(
@@ -124,9 +106,6 @@ export class UserPermissionController {
     }));
   }
 
-  /**
-   * Assign a permission to multiple users
-   */
   @Post('bulk-assign-to-permission')
   @HttpCode(HttpStatus.CREATED)
   async assignPermissionToMultipleUsers(
@@ -153,18 +132,13 @@ export class UserPermissionController {
     return results;
   }
 
-  /**
-   * Remove all permissions from a user
-   */
+
   @Delete('user/:userId/permissions')
   @HttpCode(HttpStatus.NO_CONTENT)
   async removeAllPermissionsFromUser(@Param('userId') userId: string): Promise<void> {
     await this.userPermissionService.removeAllPermissionsFromUser(userId);
   }
 
-  /**
-   * Get user permissions with pagination
-   */
   @Get('user/:userId/permissions/paginated')
   async getUserPermissionsPaginated(
     @Param('userId') userId: string,

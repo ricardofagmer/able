@@ -12,7 +12,6 @@ export class EndpointService {
   ) {}
 
   async create(createEndpointDto: CreateEndpointDto): Promise<EndpointWeb> {
-    // Check if endpoint- with same name or value already exists
     const existingEndpoint = await this.endpointRepository.findOne({
       where: [
         { name: createEndpointDto.name },
@@ -51,7 +50,6 @@ export class EndpointService {
   async update(id: number, updateEndpointDto: UpdateEndpointDto): Promise<EndpointWeb> {
     const endpoint = await this.findOne(id);
 
-    // Check if another endpoint- with same name or value exists (excluding current one)
     if (updateEndpointDto.name || updateEndpointDto.value) {
       const existingEndpoint = await this.endpointRepository.findOne({
         where: [

@@ -10,11 +10,9 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import {
-  AssignPermissionToEndpointDto,
   BulkAssignPermissionsDto,
   BulkAssignEndpointsDto,
   HasAccessResponseDto,
-  PermissionEndpointResponseDto,
 } from './dto/permission-endpoint.dto';
 import { PermissionEndpointService } from './permission-endpoint.service';
 import { EndpointWeb, PermissaoEndpoint, Permission } from '@able/api-shared';

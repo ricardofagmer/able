@@ -22,8 +22,8 @@ export default function AuthModal() {
 
         if (!email.trim()) {
             toast({
-                title: 'Erro',
-                description: 'Por favor, insira um email válido.',
+                title: 'Error',
+                description: 'Please enter a valid email.',
                 variant: 'destructive',
             });
             return;
@@ -32,19 +32,17 @@ export default function AuthModal() {
         setLoading(true);
 
         try {
-            // Check if user exists in database first
             const userExistsResponse = await userDataAccess.checkUserExists(email);
 
             if (!userExistsResponse) {
                 toast({
-                    title: 'Erro',
-                    description: 'Email não encontrado no sistema.',
+                    title: 'Error',
+                    description: 'Email not found in the system.',
                     variant: 'destructive',
                 });
                 return;
             }
 
-            // If user exists, proceed with login
             const response = {
                 accessToken: 'demo-token-' + Date.now(),
                 refreshToken: 'demo-refresh-' + Date.now(),
@@ -54,18 +52,15 @@ export default function AuthModal() {
             };
 
             if (response.accessToken) {
-                // Fetch user permissions
 
-
-                // Set tokens with permissions to store in localStorage
                 setTokens(response.accessToken, response.refreshToken, {
                     id: userExistsResponse.id,
                     email: userExistsResponse.email
                 }, userExistsResponse.permissions);
 
                 toast({
-                    title: 'Sucesso',
-                    description: 'Login realizado com sucesso!',
+                    title: 'Success',
+                    description: 'Login successful!',
                 });
 
                 closeModal();
@@ -73,8 +68,8 @@ export default function AuthModal() {
             }
         } catch (error: any) {
             toast({
-                title: 'Erro no login',
-                description: error.message || 'Credenciais inválidas. Tente novamente.',
+                title: 'Login error',
+                description: error.message || 'Invalid credentials. Please try again.',
                 variant: 'destructive',
             });
         } finally {
@@ -91,7 +86,7 @@ export default function AuthModal() {
         <Dialog open={modalType === 'login'} onOpenChange={handleClose}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Fazer Login</DialogTitle>
+                    <DialogTitle>Login</DialogTitle>
                 </DialogHeader>
 
                 <form onSubmit={handleLogin} className="space-y-4">
@@ -100,7 +95,7 @@ export default function AuthModal() {
                         <Input
                             id="email"
                             type="email"
-                            placeholder="Digite seu email"
+                            placeholder="Enter your email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
@@ -115,14 +110,14 @@ export default function AuthModal() {
                             onClick={handleClose}
                             className="flex-1"
                         >
-                            Cancelar
+                            Cancel
                         </Button>
                         <Button
                             type="submit"
                             disabled={loading}
                             className="flex-1"
                         >
-                            {loading ? 'Verificando...' : 'Entrar'}
+                            {loading ? 'Verifying...' : 'Sign In'}
                         </Button>
                     </div>
                 </form>

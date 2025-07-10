@@ -7,13 +7,12 @@ export interface PermissionDto {
     deactivatedAt?: Date | null;
     selectedEndpoints?: string[];
     selectedUsers?: string[];
-    // API response structure
     permissaoEndpoints?: Array<{
-        endpoint?: { 
-            id?: number; 
+        endpoint?: {
+            id?: number;
             name?: string;
             value?: string;
-            [key: string]: any 
+            [key: string]: any
         };
         [key: string]: any;
     }>;
@@ -51,7 +50,6 @@ class PermissionDataAccess extends ServerResourceService<
         const permissions = await super.getAll(options);
         if (!permissions) return [];
 
-        // Transform the API response to match frontend expectations
         return permissions.map((permission) => ({
             ...permission,
             selectedEndpoints:
@@ -76,46 +74,6 @@ class PermissionDataAccess extends ServerResourceService<
     }
 
 
-
-    async getUserPermissions(userId: string): Promise<PermissionDto[]> {
-        return this.customEndpoint("GET", `user-permissions/user/${userId}`);
-    }
-
-    async assignPermissionToEndpoint(
-        permissionId: number,
-        endpointId: number
-    ): Promise<any> {
-        return this.customEndpoint("POST", "acl/permission-endpoint-/assign", {
-            permissionId,
-            endpointId,
-        });
-    }
-
-    async removePermissionFromEndpoint(
-        permissionId: number,
-        endpointId: number
-    ): Promise<void> {
-        return this.customEndpoint(
-            "DELETE",
-            `acl/permission-endpoint-/remove/${permissionId}/${endpointId}`
-        );
-    }
-
-    async getEndpointsByPermission(permissionId: number): Promise<any[]> {
-        return this.customEndpoint(
-            "GET",
-            `acl/permission-endpoint-/permission/${permissionId}/endpoints`
-        );
-    }
-
-    async getPermissionsByEndpoint(
-        endpointId: number
-    ): Promise<PermissionDto[]> {
-        return this.customEndpoint(
-            "GET",
-            `acl/permission-endpoint-/endpoint/${endpointId}/permissions`
-        );
-    }
 }
 
 export const permissionDataAccess = new PermissionDataAccess();

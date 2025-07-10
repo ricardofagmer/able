@@ -1,7 +1,0 @@
-apiVersion: networking.gke.io/v1
-kind: ManagedCertificate
-metadata:
-    name: able-cert
-spec:
-    domains:
-        - app.able.com.br

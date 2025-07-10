@@ -11,9 +11,6 @@ export * from './libs/user/entities/permission-endpoint.entity';
 export * from './libs/auth/entities/refresh-token.entity';
 
 export * from './libs/env/src';
-export * from './libs/services/src';
 export * from './libs/exception/src';
-
-
 export * from './libs/decorators/req-account-id.decorator';
 

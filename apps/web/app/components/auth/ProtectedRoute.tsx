@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { usePermissions } from '@/hooks/usePermissions';
 import { useUserStore } from '@/store/userStore';
 
 interface ProtectedRouteProps {
@@ -83,19 +82,17 @@ export function ProtectedRoute({
         );
     }
 
-    // Only show access denied if user is authenticated but doesn't have permission
-    // For unauthenticated users, we allow them to see the page content
     if (!isAuthenticated || !account || !allow) {
         return (
             <div className="flex items-center justify-center min-h-screen">
                 <div className="text-center">
-                    <h1 className="text-2xl font-bold text-gray-900 mb-4">Acesso Negado</h1>
-                    <p className="text-gray-600 mb-6">Você não tem permissão para acessar esta página.</p>
+                    <h1 className="text-2xl font-bold text-gray-900 mb-4">Access Denied</h1>
+                    <p className="text-gray-600 mb-6">You do not have permission to access this page.</p>
                     <button
                         onClick={() => router.push(fallbackPath)}
                         className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
                     >
-                        Voltar ao Início
+                        Back to Home
                     </button>
                 </div>
             </div>
@@ -103,7 +100,5 @@ export function ProtectedRoute({
 
     }
 
-    // Allow access to the page content
-    // If user is not authenticated, they'll see the page but Header will show appropriate navigation
     return <>{children}</>;
 }

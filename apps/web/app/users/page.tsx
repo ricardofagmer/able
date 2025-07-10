@@ -75,8 +75,8 @@ export default function UsersListPage() {
             setUsers(usersWithPermissions);
         } catch (error) {
             toast({
-                title: "Erro",
-                description: "Falha ao carregar dados",
+                title: "Error",
+                description: "Failed to load data",
                 variant: "destructive",
             });
         } finally {
@@ -131,16 +131,16 @@ export default function UsersListPage() {
             ));
 
             toast({
-                title: "Sucesso",
-                description: `Usuário "${editForm.name}" atualizado com sucesso`,
+                title: "Success",
+                description: `User "${editForm.name}" updated successfully`,
             });
 
             setEditingUser(null);
             setEditForm({ name: '', email: '', isActive: false, selectedPermissions: [] });
         } catch (error) {
             toast({
-                title: "Erro",
-                description: "Falha ao atualizar usuário",
+                title: "Error",
+                description: "Failed to update user",
                 variant: "destructive",
             });
         }
@@ -153,7 +153,7 @@ export default function UsersListPage() {
     };
 
     const handleDelete = async (user: User) => {
-        const confirmed = window.confirm(`Tem certeza que deseja excluir o usuário "${user.name}"?`);
+        const confirmed = window.confirm(`Are you sure you want to delete the user "${user.name}"?`);
         if (!confirmed) return;
 
         try {
@@ -161,13 +161,13 @@ export default function UsersListPage() {
             setUsers(prev => prev.filter(u => u.id !== user.id));
 
             toast({
-                title: "Sucesso",
-                description: `Usuário "${user.name}" excluído com sucesso`,
+                title: "Success",
+                description: `User "${user.name}" deleted successfully`,
             });
         } catch (error) {
             toast({
-                title: "Erro",
-                description: "Falha ao excluir usuário",
+                title: "Error",
+                description: "Failed to delete user",
                 variant: "destructive",
             });
         }
@@ -185,20 +185,20 @@ export default function UsersListPage() {
             ));
 
             toast({
-                title: "Sucesso",
-                description: `Usuário ${updatedUser ? 'ativado' : 'desativado'} com sucesso`,
+                title: "Success",
+                description: `User ${updatedUser ? 'activated' : 'deactivated'} successfully`,
             });
         } catch (error) {
             toast({
-                title: "Erro",
-                description: "Falha ao alterar status do usuário",
+                title: "Error",
+                description: "Failed to change user status",
                 variant: "destructive",
             });
         }
     };
 
     const formatDate = (dateString: string) => {
-        return new Date(dateString).toLocaleDateString('pt-BR', {
+        return new Date(dateString).toLocaleDateString('en-US', {
             day: '2-digit',
             month: '2-digit',
             year: 'numeric',
@@ -264,8 +264,8 @@ export default function UsersListPage() {
             await loadData();
 
             toast({
-                title: "Sucesso",
-                description: "Usuário criado com sucesso!",
+                title: "Success",
+                description: "User created successfully!",
             });
 
             // Reset form and close modal
@@ -280,8 +280,8 @@ export default function UsersListPage() {
             setPermissionSearch('');
         } catch (error) {
             toast({
-                title: "Erro",
-                description: "Falha ao criar usuário. Tente novamente.",
+                title: "Error",
+                description: "Failed to create user. Please try again.",
                 variant: "destructive",
             });
         } finally {
@@ -316,8 +316,8 @@ export default function UsersListPage() {
                             <ArrowLeft className="h-5 w-5" />
                         </Button>
                         <div>
-                            <h1 className="text-3xl font-bold text-gray-900">Usuários Registrados</h1>
-                            <p className="text-gray-600 mt-1">Gerencie todos os usuários da aplicação</p>
+                            <h1 className="text-3xl font-bold text-gray-900">Registered Users</h1>
+                            <p className="text-gray-600 mt-1">Manage all application users</p>
                         </div>
                     </div>
                     <Button
@@ -325,7 +325,7 @@ export default function UsersListPage() {
                         className="flex items-center gap-2"
                     >
                         <Plus className="h-4 w-4"/>
-                        Novo Usuário
+                        New User
                     </Button>
                 </div>
 
@@ -337,7 +337,7 @@ export default function UsersListPage() {
                                 <Search
                                     className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                                 <Input
-                                    placeholder="Buscar por nome ou email..."
+                                    placeholder="Search by name or email..."
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                     className="pl-10"
@@ -349,14 +349,14 @@ export default function UsersListPage() {
                                 className="flex items-center gap-2"
                             >
                                 <Filter className="h-4 w-4" />
-                                Filtros
+                                Filters
                             </Button>
                         </div>
 
                         {showFilters && (
                             <div className="mt-4 p-4 bg-gray-50 rounded-lg">
                                 <p className="text-sm text-gray-600">
-                                    Filtros adicionais serão implementados aqui (status, data de criação, etc.)
+                                    Additional filters will be implemented here (status, creation date, etc.)
                                 </p>
                             </div>
                         )}
@@ -368,10 +368,10 @@ export default function UsersListPage() {
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2">
                             <Users className="h-5 w-5" />
-                            Usuários ({filteredUsers.length})
+                            Users ({filteredUsers.length})
                         </CardTitle>
                         <CardDescription>
-                            {isLoading ? 'Carregando usuários...' : `${filteredUsers.length} usuário(s) encontrado(s)`}
+                            {isLoading ? 'Loading users...' : `${filteredUsers.length} user(s) found`}
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -383,18 +383,18 @@ export default function UsersListPage() {
                             <div className="text-center py-8">
                                 <Users className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                                 <h3 className="text-lg font-medium text-gray-900 mb-2">
-                                    {searchTerm ? 'Nenhum usuário encontrado' : 'Nenhum usuário registrado'}
+                                    {searchTerm ? 'No users found' : 'No users registered'}
                                 </h3>
                                 <p className="text-gray-600 mb-4">
                                     {searchTerm
-                                        ? 'Tente ajustar os termos de busca'
-                                        : 'Comece criando seu primeiro usuário'
+                                        ? 'Try adjusting your search terms'
+                                        : 'Start by creating your first user'
                                     }
                                 </p>
                                 {!searchTerm && (
                                     <Button onClick={() => setShowCreateModal(true)}>
                                         <Plus className="h-4 w-4 mr-2"/>
-                                        Criar Primeiro Usuário
+                                        Create First User
                                     </Button>
                                 )}
                             </div>
@@ -412,7 +412,7 @@ export default function UsersListPage() {
                                                         ? 'bg-green-100 text-green-800'
                                                         : 'bg-gray-100 text-gray-800'
                                                     }`}>
-                                                    {user.isActive ? 'Ativo' : 'Inativo'}
+                                                    {user.isActive ? 'Active' : 'Inactive'}
                                                 </span>
                                             </div>
                                             <div className="flex items-center gap-4 text-sm text-gray-600">
@@ -421,7 +421,7 @@ export default function UsersListPage() {
                                                  </code>
                                                  <div className="flex items-center gap-2">
                                                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                                         {user.permissionsCount || 0} permissões
+                                                         {user.permissionsCount || 0} permissions
                                                      </span>
                                                  </div>
                                             </div>
@@ -449,31 +449,31 @@ export default function UsersListPage() {
                 {!isLoading && users.length > 0 && (
                     <Card className="mt-6">
                         <CardHeader>
-                            <CardTitle className="text-lg">Estatísticas</CardTitle>
+                            <CardTitle className="text-lg">Statistics</CardTitle>
                         </CardHeader>
                         <CardContent>
                             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                                 <div className="text-center p-4 bg-blue-50 rounded-lg">
                                     <div className="text-2xl font-bold text-blue-600">{users.length}</div>
-                                    <div className="text-sm text-blue-800">Total de Usuários</div>
+                                    <div className="text-sm text-blue-800">Total Users</div>
                                 </div>
                                 <div className="text-center p-4 bg-green-50 rounded-lg">
                                     <div className="text-2xl font-bold text-green-600">
                                         {users.filter(u => u.isActive).length}
                                     </div>
-                                    <div className="text-sm text-green-800">Usuários Ativos</div>
+                                    <div className="text-sm text-green-800">Active Users</div>
                                 </div>
                                 <div className="text-center p-4 bg-gray-50 rounded-lg">
                                     <div className="text-2xl font-bold text-gray-600">
                                         {users.filter(u => !u.isActive).length}
                                     </div>
-                                    <div className="text-sm text-gray-800">Usuários Inativos</div>
+                                    <div className="text-sm text-gray-800">Inactive Users</div>
                                 </div>
                                 <div className="text-center p-4 bg-purple-50 rounded-lg">
                                     <div className="text-2xl font-bold text-purple-600">
                                         {users.reduce((total, user) => total + (user.permissionsCount || 0), 0)}
                                     </div>
-                                    <div className="text-sm text-purple-800">Total de Permissões</div>
+                                    <div className="text-sm text-purple-800">Total Permissions</div>
                                 </div>
                             </div>
                         </CardContent>
@@ -485,7 +485,7 @@ export default function UsersListPage() {
                     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                         <div className="bg-white rounded-lg p-6 w-full max-w-4xl mx-4 max-h-[90vh] overflow-y-auto">
                             <div className="flex items-center justify-between mb-4">
-                                <h2 className="text-xl font-semibold text-gray-900">Editar Usuário</h2>
+                                <h2 className="text-xl font-semibold text-gray-900">Edit User</h2>
                                 <Button
                                     variant="ghost"
                                     size="icon"
@@ -498,12 +498,12 @@ export default function UsersListPage() {
 
                             <div className="space-y-4">
                                 <div>
-                                    <Label htmlFor="edit-name">Nome</Label>
+                                    <Label htmlFor="edit-name">Name</Label>
                                     <Input
                                         id="edit-name"
                                         value={editForm.name}
                                         onChange={(e) => setEditForm(prev => ({ ...prev, name: e.target.value }))}
-                                        placeholder="Nome do usuário"
+                                        placeholder="User name"
                                         className="mt-1"
                                     />
                                 </div>
@@ -514,21 +514,21 @@ export default function UsersListPage() {
                                         id="edit-email"
                                         value={editForm.email}
                                         onChange={(e) => setEditForm(prev => ({ ...prev, email: e.target.value }))}
-                                        placeholder="email@exemplo.com"
+                                        placeholder="email@example.com"
                                         className="mt-1"
                                     />
                                 </div>
 
                                 {/* Permissions Section */}
                                 <div className="space-y-2">
-                                    <h3 className="text-sm font-medium text-gray-700">Permissões</h3>
+                                    <h3 className="text-sm font-medium text-gray-700">Permissions</h3>
                                     <div className="border rounded-lg p-4 space-y-4">
                                         <div className="grid grid-cols-2 gap-4">
                                             <div>
-                                                <h4 className="text-sm font-medium text-gray-700 mb-2">Disponíveis</h4>
+                                                <h4 className="text-sm font-medium text-gray-700 mb-2">Available</h4>
                                                 <Input
                                                     type="text"
-                                                    placeholder="Buscar permissões..."
+                                                    placeholder="Search permissions..."
                                                     value={editPermissionSearch}
                                                     onChange={(e) => setEditPermissionSearch(e.target.value)}
                                                     className="mb-2"
@@ -555,7 +555,7 @@ export default function UsersListPage() {
                                             </div>
 
                                             <div>
-                                                <h4 className="text-sm font-medium text-gray-700 mb-2">Selecionadas</h4>
+                                                <h4 className="text-sm font-medium text-gray-700 mb-2">Selected</h4>
                                                 <div className="space-y-2 max-h-52 overflow-y-auto">
                                                     {editForm.selectedPermissions.map((permissionId) => {
                                                         const permission = availablePermissions.find(p => p.id.toString() === permissionId);
@@ -588,7 +588,7 @@ export default function UsersListPage() {
                                         checked={editForm.isActive}
                                         onCheckedChange={(checked) => setEditForm(prev => ({ ...prev, isActive: checked }))}
                                     />
-                                    <Label htmlFor="edit-active">Usuário ativo</Label>
+                                    <Label htmlFor="edit-active">Active user</Label>
                                 </div>
                             </div>
 
@@ -597,13 +597,13 @@ export default function UsersListPage() {
                                     variant="outline"
                                     onClick={handleCancelEdit}
                                 >
-                                    Cancelar
+                                    Cancel
                                 </Button>
                                 <Button
                                     onClick={handleSaveEdit}
                                     disabled={!editForm.name.trim() || !editForm.email.trim()}
                                 >
-                                    Salvar
+                                    Save
                                 </Button>
                             </div>
                         </div>
@@ -617,7 +617,7 @@ export default function UsersListPage() {
                             <div className="flex items-center justify-between mb-4">
                                 <h2 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
                                     <UserPlus className="h-5 w-5" />
-                                    Criar Novo Usuário
+                                    Create New User
                                 </h2>
                                 <Button
                                     variant="ghost"
@@ -632,52 +632,52 @@ export default function UsersListPage() {
                             <form onSubmit={handleCreateSubmit} className="space-y-6">
                                 {/* Name Field */}
                                 <div className="space-y-2">
-                                    <Label htmlFor="create-name">Nome Completo *</Label>
+                                    <Label htmlFor="create-name">Full Name *</Label>
                                     <Input
                                         id="create-name"
                                         type="text"
                                         value={createForm.name}
                                         onChange={(e) => handleCreateInputChange('name', e.target.value)}
-                                        placeholder="Digite o nome completo"
+                                        placeholder="Enter full name"
                                         required
                                     />
                                 </div>
 
                                 {/* Email Field */}
                                 <div className="space-y-2">
-                                    <Label htmlFor="create-email">Endereço de Email *</Label>
+                                    <Label htmlFor="create-email">Email Address *</Label>
                                     <Input
                                         id="create-email"
                                         type="email"
                                         value={createForm.email}
                                         onChange={(e) => handleCreateInputChange('email', e.target.value)}
-                                        placeholder="Digite o endereço de email"
+                                        placeholder="Enter email address"
                                         required
                                     />
                                 </div>
 
                                 {/* Password Field */}
                                 <div className="space-y-2">
-                                    <Label htmlFor="create-password">Senha</Label>
+                                    <Label htmlFor="create-password">Password</Label>
                                     <Input
                                         id="create-password"
                                         type="password"
                                         value={createForm.password}
                                         onChange={(e) => handleCreateInputChange('password', e.target.value)}
-                                        placeholder="Digite a senha (opcional)"
+                                        placeholder="Enter password (optional)"
                                     />
                                 </div>
 
                                 {/* Permissions Section */}
                                 <div className="space-y-2">
-                                    <h3 className="text-sm font-medium text-gray-700">Permissões</h3>
+                                    <h3 className="text-sm font-medium text-gray-700">Permissions</h3>
                                     <div className="border rounded-lg p-4 space-y-4">
                                         <div className="grid grid-cols-2 gap-4">
                                             <div>
-                                                <h4 className="text-sm font-medium text-gray-700 mb-2">Disponíveis</h4>
+                                                <h4 className="text-sm font-medium text-gray-700 mb-2">Available</h4>
                                                 <Input
                                                     type="text"
-                                                    placeholder="Buscar permissões..."
+                                                    placeholder="Search permissions..."
                                                     value={permissionSearch}
                                                     onChange={(e) => setPermissionSearch(e.target.value)}
                                                     className="mb-2"
@@ -704,7 +704,7 @@ export default function UsersListPage() {
                                             </div>
 
                                             <div>
-                                                <h4 className="text-sm font-medium text-gray-700 mb-2">Selecionadas</h4>
+                                                <h4 className="text-sm font-medium text-gray-700 mb-2">Selected</h4>
                                                 <div className="space-y-2 max-h-52 overflow-y-auto">
                                                     {createForm.selectedPermissions.map((permissionId) => {
                                                         const permission = availablePermissions.find(p => p.id === permissionId);
@@ -738,7 +738,7 @@ export default function UsersListPage() {
                                         checked={createForm.isActive}
                                         onCheckedChange={(checked) => handleCreateInputChange('isActive', checked as boolean)}
                                     />
-                                    <Label htmlFor="create-isActive">Usuário Ativo</Label>
+                                    <Label htmlFor="create-isActive">Active User</Label>
                                 </div>
 
                                 {/* Submit Buttons */}
@@ -748,7 +748,7 @@ export default function UsersListPage() {
                                         variant="outline"
                                         onClick={handleCancelCreate}
                                     >
-                                        Cancelar
+                                        Cancel
                                     </Button>
                                     <Button
                                         type="submit"
@@ -756,7 +756,7 @@ export default function UsersListPage() {
                                         className="flex items-center gap-2"
                                     >
                                         <Save className="h-4 w-4" />
-                                        {isSubmitting ? 'Criando...' : 'Criar Usuário'}
+                                        {isSubmitting ? 'Creating...' : 'Create User'}
                                     </Button>
                                 </div>
                             </form>

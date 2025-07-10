@@ -4,8 +4,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { apiBundleConfig } from './config/api.bundle-config';
 import { CacheModule } from '@nestjs/cache-manager';
-import { I18nModule } from 'nestjs-i18n';
-import { MailerModule } from '@nestjs-modules/mailer';
 
 @Global()
 @Module({})
@@ -24,8 +22,6 @@ export class CoreApiSharedModule {
         const NEST_MODULES = [
             TypeOrmModule.forRootAsync(moduleConfigs.TypeOrmModule()),
             CacheModule.registerAsync(moduleConfigs.RedisCacheModule()),
-            I18nModule.forRootAsync(moduleConfigs.I18nModule(config?.i18nPathFile)),
-            MailerModule.forRootAsync(moduleConfigs.MailerModule()),
             ThrottlerModule.forRoot([{
                 ttl: 60,
                 limit: 1000

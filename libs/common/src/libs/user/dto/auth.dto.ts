@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsNumber } from 'class-validator';
-import { AccountRole } from '../../app-config/roles.enum';
 
 
 export class LoginDto {
@@ -21,7 +20,7 @@ export class LoginResponse {
     refreshToken!: string;
 
     @ApiProperty()
-    userRole!: AccountRole;
+    userRole!: any;
 
     @ApiProperty()
     userId!: number;

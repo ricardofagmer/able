@@ -2,7 +2,6 @@ import {
     Controller,
     Get,
     Post,
-    Put,
     Delete,
     Param,
     Body,
@@ -13,7 +12,6 @@ import {
     Patch,
 } from "@nestjs/common";
 import { PermissionEndpointService } from "./permission-endpoint.service";
-import { UserPermissionService } from "./user-permission.service";
 import { Permission } from "@able/api-shared";
 
 interface CreatePermissionDto {
@@ -38,12 +36,9 @@ interface PermissionQueryDto {
 export class PermissionsController {
     constructor(
         private readonly permissionEndpointService: PermissionEndpointService,
-        private readonly userPermissionService: UserPermissionService
     ) {}
 
-    /**
-     * Create a new permission
-     */
+
     @Post()
     @HttpCode(HttpStatus.CREATED)
     async createPermission(
@@ -56,9 +51,7 @@ export class PermissionsController {
         );
     }
 
-    /**
-     * Get all permissions with their relationships
-     */
+
     @Get()
     async getAllPermissions(
         @Query() query: PermissionQueryDto
@@ -66,9 +59,7 @@ export class PermissionsController {
         return await this.permissionEndpointService.getAllPermissionEndpoints();
     }
 
-    /**
-     * Get a specific permission by ID
-     */
+
     @Get(":id")
     async getPermissionById(
         @Param("id", ParseIntPipe) id: number
@@ -84,18 +75,13 @@ export class PermissionsController {
         return permission;
     }
 
-    /**
-     * Update a permission
-     */
     @Patch('update/:id')
     async updatePermission(
         @Param("id", ParseIntPipe) id: number,
         @Body() updatePermissionDto: UpdatePermissionDto
     ): Promise<Permission> {
-        // First delete the existing permission
         await this.permissionEndpointService.deletePermission(id);
 
-        // Then create a new one with updated data
         return await this.permissionEndpointService.create(
             updatePermissionDto.name || `Updated Permission ${id}`,
             updatePermissionDto.selectedEndpoints || [],
@@ -103,9 +89,7 @@ export class PermissionsController {
         );
     }
 
-    /**
-     * Delete a permission
-     */
+
     @Delete("remove/:id")
     @HttpCode(HttpStatus.NO_CONTENT)
     async deletePermission(
@@ -114,9 +98,7 @@ export class PermissionsController {
         return await this.permissionEndpointService.deletePermission(id);
     }
 
-    /**
-     * Get permissions with pagination
-     */
+
     @Get("paginated")
     async getPermissionsPaginated(@Query() query: PermissionQueryDto): Promise<{
         permissions: Permission[];
@@ -133,7 +115,6 @@ export class PermissionsController {
 
         let filteredPermissions = permissions;
 
-        // Apply search filter if provided
         if (query.search) {
             filteredPermissions = permissions.filter((permission) =>
                 permission.name

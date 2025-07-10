@@ -76,16 +76,16 @@ export default function EndpointsListPage() {
             ));
 
             toast({
-                title: "Sucesso",
-                description: `Endpoint "${editForm.name}" atualizado com sucesso`,
+                title: "Success",
+                description: `Endpoint "${editForm.name}" updated successfully`,
             });
 
             setEditingEndpoint(null);
             setEditForm({ name: '', value: '', deactivatedAt: '' });;
         } catch (error) {
             toast({
-                title: "Erro",
-                description: "Falha ao atualizar endpoint",
+                title: "Error",
+                description: "Failed to update endpoint",
                 variant: "destructive",
             });
         }
@@ -97,7 +97,7 @@ export default function EndpointsListPage() {
     };
 
     const handleDelete = async (endpoint: Endpoint) => {
-        if (!confirm(`Tem certeza que deseja excluir o endpoint "${endpoint.name}"?`)) {
+        if (!confirm(`Are you sure you want to delete the endpoint "${endpoint.name}"?`)) {
             return;
         }
 
@@ -105,13 +105,13 @@ export default function EndpointsListPage() {
             await remove(endpoint.id);
             setEndpoints(prev => prev.filter(e => e.id !== endpoint.id));
             toast({
-                title: "Sucesso",
-                description: `Endpoint "${endpoint.name}" excluído com sucesso`,
+                title: "Success",
+                description: `Endpoint "${endpoint.name}" deleted successfully`,
             });
         } catch (error) {
             toast({
-                title: "Erro",
-                description: "Falha ao excluir endpoint",
+                title: "Error",
+                description: "Failed to delete endpoint",
                 variant: "destructive",
             });
         }
@@ -133,8 +133,8 @@ export default function EndpointsListPage() {
                             <ArrowLeft className="h-5 w-5"/>
                         </Button>
                         <div>
-                            <h1 className="text-3xl font-bold text-gray-900">Endpoints Registrados</h1>
-                            <p className="text-gray-600 mt-1">Gerencie todos os endpoints da aplicação</p>
+                            <h1 className="text-3xl font-bold text-gray-900">Registered Endpoints</h1>
+                            <p className="text-gray-600 mt-1">Manage all application endpoints</p>
                         </div>
                     </div>
                     <Button
@@ -142,7 +142,7 @@ export default function EndpointsListPage() {
                         className="flex items-center gap-2"
                     >
                         <Plus className="h-4 w-4"/>
-                        Novo Endpoint
+                        New Endpoint
                     </Button>
                 </div>
 
@@ -154,7 +154,7 @@ export default function EndpointsListPage() {
                                 <Search
                                     className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4"/>
                                 <Input
-                                    placeholder="Buscar por nome ou URL..."
+                                    placeholder="Search by name or URL..."
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                     className="pl-10"
@@ -166,14 +166,14 @@ export default function EndpointsListPage() {
                                 className="flex items-center gap-2"
                             >
                                 <Filter className="h-4 w-4"/>
-                                Filtros
+                                Filters
                             </Button>
                         </div>
 
                         {showFilters && (
                             <div className="mt-4 p-4 bg-gray-50 rounded-lg">
                                 <p className="text-sm text-gray-600">
-                                    Filtros adicionais serão implementados aqui (status, data de criação, etc.)
+                                    Additional filters will be implemented here (status, creation date, etc.)
                                 </p>
                             </div>
                         )}
@@ -188,7 +188,7 @@ export default function EndpointsListPage() {
                             Endpoints ({filteredEndpoints.length})
                         </CardTitle>
                         <CardDescription>
-                            {isLoading ? 'Carregando endpoints...' : `${filteredEndpoints.length} endpoint(s) encontrado(s)`}
+                            {isLoading ? 'Loading endpoints...' : `${filteredEndpoints.length} endpoint(s) found`}
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -200,18 +200,18 @@ export default function EndpointsListPage() {
                             <div className="text-center py-8">
                                 <Globe className="h-12 w-12 text-gray-400 mx-auto mb-4"/>
                                 <h3 className="text-lg font-medium text-gray-900 mb-2">
-                                    {searchTerm ? 'Nenhum endpoint- encontrado' : 'Nenhum endpoint- registrado'}
+                                    {searchTerm ? 'No endpoints found' : 'No endpoints registered'}
                                 </h3>
                                 <p className="text-gray-600 mb-4">
                                     {searchTerm
-                                        ? 'Tente ajustar os termos de busca'
-                                        : 'Comece criando seu primeiro endpoint-'
+                                        ? 'Try adjusting your search terms'
+                                        : 'Start by creating your first endpoint'
                                     }
                                 </p>
                                 {!searchTerm && (
                                     <Button onClick={() => router.push('/endpoints')}>
                                         <Plus className="h-4 w-4 mr-2"/>
-                                        Criar Primeiro Endpoint
+                                        Create First Endpoint
                                     </Button>
                                 )}
                             </div>
@@ -268,25 +268,25 @@ export default function EndpointsListPage() {
                 {!isLoading && endpoints.length > 0 && (
                     <Card className="mt-6">
                         <CardHeader>
-                            <CardTitle className="text-lg">Estatísticas</CardTitle>
+                            <CardTitle className="text-lg">Statistics</CardTitle>
                         </CardHeader>
                         <CardContent>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <div className="text-center p-4 bg-blue-50 rounded-lg">
                                     <div className="text-2xl font-bold text-blue-600">{endpoints.length}</div>
-                                    <div className="text-sm text-blue-800">Total de Endpoints</div>
+                                    <div className="text-sm text-blue-800">Total Endpoints</div>
                                 </div>
                                 <div className="text-center p-4 bg-green-50 rounded-lg">
                                     <div className="text-2xl font-bold text-green-600">
                                         {endpoints.filter(e => e.isActive).length}
                                     </div>
-                                    <div className="text-sm text-green-800">Endpoints Ativos</div>
+                                    <div className="text-sm text-green-800">Active Endpoints</div>
                                 </div>
                                 <div className="text-center p-4 bg-gray-50 rounded-lg">
                                     <div className="text-2xl font-bold text-gray-600">
                                         {endpoints.filter(e => !e.isActive).length}
                                     </div>
-                                    <div className="text-sm text-gray-800">Endpoints Inativos</div>
+                                    <div className="text-sm text-gray-800">Inactive Endpoints</div>
                                 </div>
                             </div>
                         </CardContent>
@@ -317,7 +317,7 @@ export default function EndpointsListPage() {
                                     id="edit-name"
                                     value={editForm.name}
                                     onChange={(e) => setEditForm(prev => ({ ...prev, name: e.target.value }))}
-                                    placeholder="Nome do endpoint"
+                                    placeholder="Endpoint name"
                                     className="mt-1"
                                 />
                             </div>
@@ -340,13 +340,13 @@ export default function EndpointsListPage() {
                                 variant="outline"
                                 onClick={handleCancelEdit}
                             >
-                                Cancelar
+                                Cancel
                             </Button>
                             <Button
                                 onClick={handleSaveEdit}
                                 disabled={!editForm.name || !editForm.value}
                             >
-                                Salvar
+                                Save
                             </Button>
                         </div>
                     </div>

@@ -1,44 +1,44 @@
 {
-    "welcome": "Bem-vindo",
-    "logout": "Sair",
+    "welcome": "Welcome",
+    "logout": "Logout",
     "login": {
-        "title": "Entrar",
+        "title": "Login",
         "email": "Email",
-        "password": "Senha",
-        "submit": "Entrar",
-        "failed": "Falha ao entrar",
-        "accountNotConfirmed": "Sua conta ainda não foi confirmada. Por favor, confirme sua conta para continuar.",
-        "accountAlreadyConfirmed": "Sua conta já foi confirmada.",
-        "accountAlreadyExists": "Já existe uma conta com o email: {{email}}",
-        "accountAlreadyExistsWithUsername": "Já existe uma conta com o nome de usuário: {{username}}",
-        "resendConfirmationEmail": "Reenviar email de confirmação",
-        "accountAlreadyExistsWithEmail": "Já existe uma conta com o email: {{email}}",
-        "emailSent": "Email de confirmação enviado, cheque sua caixa de entrada",
+        "password": "Password",
+        "submit": "Sign In",
+        "failed": "Login failed",
+        "accountNotConfirmed": "Your account has not been confirmed yet. Please confirm your account to continue.",
+        "accountAlreadyConfirmed": "Your account has already been confirmed.",
+        "accountAlreadyExists": "An account with this email already exists: {{email}}",
+        "accountAlreadyExistsWithUsername": "An account with this username already exists: {{username}}",
+        "resendConfirmationEmail": "Resend confirmation email",
+        "accountAlreadyExistsWithEmail": "An account with this email already exists: {{email}}",
+        "emailSent": "Confirmation email sent, please check your inbox",
         "forgotPassword":{
-            "title": "Esqueci minha senha",
-            "body":"Digite seu email para receber o link de redefinição de senha",
-            "button":"Enviar Link",
-            "buttonBack":"Voltar para Login",
+            "title": "Forgot my password",
+            "body":"Enter your email to receive the password reset link",
+            "button":"Send Link",
+            "buttonBack":"Back to Login",
             "success": {
-                "title": "Verifique seu email",
-                "message": "Enviamos um link de redefinição de senha para seu email. Por favor, verifique sua caixa de entrada."
+                "title": "Check your email",
+                "message": "We sent a password reset link to your email. Please check your inbox."
             },
             "invalidResetLink":{
-                "title": "Link de redefinição de senha inválido",
-                "message": "O link de redefinição de senha é inválido ou expirou. Por favor, solicite um novo link.",
-                "buttonRequest": "Solicitar Novo Link"
+                "title": "Invalid password reset link",
+                "message": "The password reset link is invalid or has expired. Please request a new link.",
+                "buttonRequest": "Request New Link"
             }
         }
     },
     "home": {
-        "title": "Inicio"
+        "title": "Home"
     },
     "unauthorized": {
-        "title": "Não autorizado",
-        "message": "Você não tem permissão para acessar esta página"
+        "title": "Unauthorized",
+        "message": "You do not have permission to access this page"
     },
     "admin": {
         "title": "Admin Dashboard",
-        "message": "Somente administradores podem ver isso"
+        "message": "Only administrators can see this"
     }
 }

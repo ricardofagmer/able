@@ -20,19 +20,19 @@ export class ServerResourceService<T, CreateDTO = Partial<T>, UpdateDTO = Partia
 
   private buildQueryParams(options?: QueryOptions): string {
     if (!options) return '';
-    
+
     const params = new URLSearchParams();
     if (options.page) params.append('page', options.page.toString());
     if (options.limit) params.append('limit', options.limit.toString());
     if (options.sort) params.append('sort', options.sort);
     if (options.order) params.append('order', options.order);
-    
+
     if (options.filters) {
       Object.entries(options.filters).forEach(([key, value]) => {
         params.append(key, String(value));
       });
     }
-    
+
     const queryString = params.toString();
     return queryString ? `?${queryString}` : '';
   }
@@ -83,10 +83,9 @@ export class ServerResourceService<T, CreateDTO = Partial<T>, UpdateDTO = Partia
   }
 }
 
-// import with 'use client' directive in Next.js components
 export class ClientResourceService<T, CreateDTO = Partial<T>, UpdateDTO = Partial<T>> implements ResourceService<T, CreateDTO, UpdateDTO> {
   private apiClient: any;
-  
+
   constructor(private readonly baseEndpoint: string) {
     // Dynamically import to avoid SSR issues
     if (typeof window !== 'undefined') {
@@ -97,19 +96,19 @@ export class ClientResourceService<T, CreateDTO = Partial<T>, UpdateDTO = Partia
 
   private buildQueryParams(options?: QueryOptions): string {
     if (!options) return '';
-    
+
     const params = new URLSearchParams();
     if (options.page) params.append('page', options.page.toString());
     if (options.limit) params.append('limit', options.limit.toString());
     if (options.sort) params.append('sort', options.sort);
     if (options.order) params.append('order', options.order);
-    
+
     if (options.filters) {
       Object.entries(options.filters).forEach(([key, value]) => {
         params.append(key, String(value));
       });
     }
-    
+
     const queryString = params.toString();
     return queryString ? `?${queryString}` : '';
   }

@@ -26,7 +26,7 @@ export class ClientApiClient {
 
   private getTokenFromCookie(): string | null {
     if (typeof document === 'undefined') return null;
-    
+
     // Parse cookies from document.cookie
     const cookies = document.cookie.split(';').reduce((acc: Record<string, string>, cookie) => {
       const [key, value] = cookie.trim().split('=');
@@ -35,52 +35,14 @@ export class ClientApiClient {
       }
       return acc;
     }, {});
-    
+
     return cookies['auth-token'] || cookies['token'] || null;
   }
 
-  async get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
-    const token = this.getTokenFromCookie();
-    
-    const response = await this.client.get<T>(url, {
-      ...config,
-      headers: {
-        ...config?.headers,
-        ...(token && { Authorization: `Bearer ${token}` })
-      }
-    });
-    return response.data;
-  }
-
-  async post<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
-    const token = this.getTokenFromCookie();
-    
-    const response = await this.client.post<T>(url, data, {
-      ...config,
-      headers: {
-        ...config?.headers,
-        ...(token && { Authorization: `Bearer ${token}` })
-      }
-    });
-    return response.data;
-  }
-
-  async put<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
-    const token = this.getTokenFromCookie();
-    
-    const response = await this.client.put<T>(url, data, {
-      ...config,
-      headers: {
-        ...config?.headers,
-        ...(token && { Authorization: `Bearer ${token}` })
-      }
-    });
-    return response.data;
-  }
 
   async delete<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
     const token = this.getTokenFromCookie();
-    
+
     const response = await this.client.delete<T>(url, {
       ...config,
       headers: {
@@ -92,7 +54,6 @@ export class ClientApiClient {
   }
 }
 
-// Export a function to get the client instance
 export const getClientApiClient = () => {
   return ClientApiClient.getInstance();
 };

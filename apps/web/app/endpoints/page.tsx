@@ -2,10 +2,9 @@
 
 import { useState } from 'react';
 import { Button } from '../components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
-import { X, ChevronDown } from 'lucide-react';
+import { X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import { endpointDataAccess, useResource } from '@able/data-access';
@@ -14,8 +13,6 @@ interface EndpointFormData {
   name: string;
   value: string;
 }
-
-
 
 export default function EndpointsPage() {
   const router = useRouter();
@@ -26,7 +23,6 @@ export default function EndpointsPage() {
   });
   const [, { create }] = useResource(endpointDataAccess);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showPermissions, setShowPermissions] = useState(false);
 
   const handleInputChange = (field: keyof EndpointFormData, value: string) => {
     setFormData(prev => ({
@@ -43,16 +39,15 @@ export default function EndpointsPage() {
       await create(formData);
 
       toast({
-        title: "Sucesso",
-        description: "Endpoint criado com sucesso!",
+        title: "Success",
+        description: "Endpoint created successfully!",
       });
 
-      // Navigate back to the list page to refresh the endpoints
       router.push('/endpoints/list');
     } catch (error) {
       toast({
-        title: "Erro",
-        description: "Falha ao criar endpoint. Tente novamente.",
+        title: "Error",
+        description: "Failed to create endpoint. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -62,12 +57,10 @@ export default function EndpointsPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Modal-like container */}
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
-          {/* Header */}
           <div className="flex items-center justify-between p-6 border-b">
-            <h2 className="text-lg font-semibold text-gray-900">Dados do endpoint web</h2>
+            <h2 className="text-lg font-semibold text-gray-900">Web endpoint data</h2>
             <Button
               variant="ghost"
               size="icon"
@@ -83,7 +76,7 @@ export default function EndpointsPage() {
               {/* Name Field */}
               <div className="space-y-2">
                 <Label htmlFor="name" className="text-sm font-medium text-gray-700">
-                  NOME *
+                  NAME *
                 </Label>
                 <Input
                   id="name"
@@ -120,14 +113,14 @@ export default function EndpointsPage() {
                   onClick={() => router.back()}
                   className="px-4 py-2"
                 >
-                  Cancelar
+                  Cancel
                 </Button>
                 <Button
                   type="submit"
                   disabled={isSubmitting || !formData.name || !formData.value}
                   className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white"
                 >
-                  {isSubmitting ? 'Salvando...' : 'Salvar'}
+                  {isSubmitting ? 'Saving...' : 'Save'}
                 </Button>
               </div>
             </form>

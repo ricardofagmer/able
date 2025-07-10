@@ -13,7 +13,6 @@ import {
     RefreshTokenResponse,
     ResetPasswordDto,
 } from '@able/common';
-import { I18nService } from 'nestjs-i18n';
 import { EnvService, User } from '@able/api-shared';
 
 @Injectable()
@@ -22,7 +21,7 @@ export class AuthService {
                 private readonly jwtService: JwtService,
                 private readonly envService: EnvService,
                 @Inject(CACHE_MANAGER) private cacheManager: Cache,
-                private i18n: I18nService
+
     ) {}
 
     async validateUser(payload: LoginDto): Promise<Omit<User, "password">> {
@@ -39,11 +38,9 @@ export class AuthService {
         const user = await this.validateUser(payload);
 
         if (!user) throw new HttpException(
-            this.i18n.translate('common.endpoint.errors.invalidCredentials'),
+            'Invalid credentials',
             HttpStatus.UNAUTHORIZED
         );
-
-
 
         const refreshToken = this.generateRefreshToken();
         const rest = { sub: user.id, email: user.email };
@@ -65,25 +62,19 @@ export class AuthService {
         return uuidv4();
     }
 
-
     async refreshAccessToken(payload: RefreshTokenDto): Promise<RefreshTokenResponse> {
         const storedRefreshToken = await this.cacheManager.get(`ableRefreshToken:${payload.userId}`);
 
         if (!storedRefreshToken || storedRefreshToken !== payload.refreshToken) {
             throw new HttpException(
-                this.i18n.t('common.endpoint.errors.invalidToken'),
+                'Invalid refresh token',
                 HttpStatus.UNAUTHORIZED
             );
         }
 
         const user = await this.userRepository.findById(payload.userId);
         if (!user) {
-            throw new HttpException(
-                this.i18n.t('common.endpoint.errors.notFoundWithId', {
-                    args: {
-                        id: payload.userId
-                    }
-                }),
+            throw new HttpException('User not found',
                 HttpStatus.NOT_FOUND
             );
         }
@@ -100,7 +91,7 @@ export class AuthService {
 
         if (!storedRefreshToken) {
             throw new HttpException(
-                this.i18n.t('common.endpoint.errors.invalidRefreshToken'),
+                'Invalid refresh token',
                 HttpStatus.NOT_FOUND
             );
         }
@@ -114,10 +105,7 @@ export class AuthService {
         await this.cacheManager.del(`ableRefreshToken:${user.id}`);
 
         if (!user) {
-            throw new HttpException(
-                this.i18n.t('common.endpoint.errors.userNotFound', {
-                    args: { email }
-                }),
+            throw new HttpException('User not found',
                 HttpStatus.NOT_FOUND
             );
         }
@@ -127,9 +115,6 @@ export class AuthService {
 
         const cacheKey = `ableRefreshToken${user.id}`;
         await this.cacheManager.set(cacheKey, resetToken, +ttl);
-
-        // TODO: Implement email sending logic or return reset token for manual handling
-        // For now, we'll just store the token in cache
 
     }
 
@@ -141,7 +126,7 @@ export class AuthService {
 
         if (!storedToken || storedToken !== token) {
             throw new HttpException(
-                this.i18n.t('common.endpoint.errors.invalidResetToken'),
+                'Invalid token',
                 HttpStatus.UNAUTHORIZED
             );
         }
@@ -149,20 +134,14 @@ export class AuthService {
         const user = await this.userRepository.findById(userId);
         if (!user) {
             throw new HttpException(
-                this.i18n.t('common.endpoint.errors.notFoundWithId', {
-                    args: { id: userId }
-                }),
+                'User not found',
                 HttpStatus.NOT_FOUND
             );
         }
 
         const password = await bcrypt.hash(newPassword, 10);
         await this.userRepository.updateUser(userId, { ...user, password });
-
         await this.cacheManager.del(cacheKey);
-
-        // TODO: Implement email confirmation logic if needed
-        // Password has been successfully reset
     }
 
 }

@@ -14,26 +14,20 @@ export class UserPermissionService {
     private userRepository: Repository<User>,
   ) {}
 
-  /**
-   * Assign a permission to a user
-   */
+
   async assignPermissionToUser(userId: number, permissionId: number): Promise<UserPermission> {
-    // Check if user exists
     const user = await this.userRepository.findOneBy({ id: userId } );
     if (!user) {
       throw new Error(`User with ID ${userId} not found`);
     }
 
-    // Check if permission exists
     const permission = await this.permissionRepository.findOne({ where: { id: permissionId } });
     if (!permission) {
       throw new Error(`Permission with ID ${permissionId} not found`);
     }
 
-    // Convert userId to string for UserPermission entity (varchar field)
     const userIdStr = userId.toString();
 
-    // Check if relationship already exists
     const existingRelation = await this.userPermissionRepository.findOne({
       where: { userId: +userIdStr, permissionId: permissionId },
     });
@@ -42,24 +36,20 @@ export class UserPermissionService {
       return existingRelation;
     }
 
-    // Create new user-permission relationship
     const userPermission = this.userPermissionRepository.create({
-      userId: +userIdStr, // Store as string since entity field is varchar
+      userId: +userIdStr,
       permissionId,
     });
 
     return await this.userPermissionRepository.save(userPermission);
   }
 
-  /**
-   * Remove a permission from a user
-   */
   async removePermissionFromUser(userId: string, permissionId: number): Promise<void> {
 
       console.log('really?',userId, permissionId)
 
     const result = await this.userPermissionRepository.delete({
-      userId: +userId, // Keep as string since the entity field is varchar
+      userId: +userId,
       permissionId: permissionId,
     });
 
@@ -68,21 +58,16 @@ export class UserPermissionService {
     }
   }
 
-  /**
-   * Get all permissions for a user
-   */
   async getUserPermissions(userId: string): Promise<Permission[]> {
     const userPermissions = await this.userPermissionRepository.find({
-      where: { userId: +userId }, // Keep as string since the entity field is varchar
+      where: { userId: +userId },
       relations: ['permission', 'permission.permissaoEndpoints', 'permission.permissaoEndpoints.endpoint'],
     });
 
     return userPermissions.map(up => up.permission);
   }
 
-  /**
-   * Get all users with a specific permission
-   */
+
   async getUsersWithPermission(permissionId: number): Promise<User[]> {
     const userPermissions = await this.userPermissionRepository.find({
       where: { permissionId },
@@ -92,23 +77,18 @@ export class UserPermissionService {
     return userPermissions.map(up => up.user);
   }
 
-  /**
-   * Check if a user has a specific permission
-   */
+
   async userHasPermission(userId: string, permissionId: number): Promise<boolean> {
     const userPermission = await this.userPermissionRepository.findOne({
-      where: { userId: +userId, permissionId }, // Keep userId as string
+      where: { userId: +userId, permissionId },
     });
 
     return !!userPermission;
   }
 
-  /**
-   * Check if a user has a specific permission by permission value
-   */
+
   async userHasPermissionByValue(userId: string, permissionValue: string): Promise<boolean> {
     const permission = await this.permissionRepository.findOne({
-      //where: { value: permissionValue },
     });
 
     if (!permission) {
@@ -118,9 +98,7 @@ export class UserPermissionService {
     return await this.userHasPermission(userId, permission.id);
   }
 
-  /**
-   * Assign multiple permissions to a user
-   */
+
   async assignMultiplePermissionsToUser(userId: string, permissionIds: number[]): Promise<UserPermission[]> {
     const results: UserPermission[] = [];
 
@@ -129,7 +107,6 @@ export class UserPermissionService {
         const userPermission = await this.assignPermissionToUser(Number(userId), permissionId);
         results.push(userPermission);
       } catch (error) {
-        // Skip if permission already exists or other errors
         console.warn(`Failed to assign permission ${permissionId} to user ${userId}:`, error instanceof Error ? error.message : String(error));
       }
     }
@@ -137,23 +114,19 @@ export class UserPermissionService {
     return results;
   }
 
-  /**
-   * Remove all permissions from a user
-   */
+
   async removeAllPermissionsFromUser(userId: string): Promise<void> {
     await this.userPermissionRepository.delete({ userId: +userId }); // Keep as string
   }
 
-  /**
-   * Get user permissions with pagination
-   */
+
   async getUserPermissionsPaginated(
     userId: string,
     page: number = 1,
     limit: number = 10
   ): Promise<{ permissions: Permission[]; total: number; page: number; limit: number }> {
     const [userPermissions, total] = await this.userPermissionRepository.findAndCount({
-      where: { userId: +userId }, // Keep as string
+      where: { userId: +userId },
       relations: ['permission'],
       skip: (page - 1) * limit,
       take: limit,

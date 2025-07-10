@@ -11,8 +11,6 @@ export class PermissionEndpointService {
     private permissaoEndpointRepository: Repository<PermissaoEndpoint>,
     @InjectRepository(Permission)
     private permissionRepository: Repository<Permission>,
-    @InjectRepository(EndpointWeb)
-    private endpointRepository: Repository<EndpointWeb>,
     @InjectRepository(UserPermission)
     private userPermissionRepository: Repository<UserPermission>,
   ) {}
@@ -23,26 +21,23 @@ export class PermissionEndpointService {
     endpointIds: Number[],
     userIds: Number[],
   ): Promise<Permission> {
-    // First, create the permission
     const permission = await this.permissionRepository.save({ name });
 
-    // Then create the permission-endpoint relationships
     if (endpointIds && endpointIds.length > 0) {
       const permissionEndpoints = endpointIds.map(endpointId =>
-        this.permissaoEndpointRepository.create({ 
-          permissaoId: permission.id, 
-          endpointId: Number(endpointId) 
+        this.permissaoEndpointRepository.create({
+          permissaoId: permission.id,
+          endpointId: Number(endpointId)
         })
       );
       await this.permissaoEndpointRepository.save(permissionEndpoints);
     }
 
-    // Then create the user-permission relationships
     if (userIds && userIds.length > 0) {
       const userPermissions = userIds.map(userId =>
-        this.userPermissionRepository.create({ 
-          userId: Number(userId), 
-          permissionId: permission.id 
+        this.userPermissionRepository.create({
+          userId: Number(userId),
+          permissionId: permission.id
         })
       );
       await this.userPermissionRepository.save(userPermissions);
@@ -95,7 +90,7 @@ export class PermissionEndpointService {
   async getAllPermissionEndpoints(): Promise<Permission[]> {
     return this.permissionRepository.find({
       relations: [
-        'permissaoEndpoints', 
+        'permissaoEndpoints',
         'permissaoEndpoints.endpoint',
         'userPermissions',
         'userPermissions.user'
@@ -125,19 +120,13 @@ export class PermissionEndpointService {
   }
 
   async deletePermission(permissionId: number): Promise<void> {
-    // Check if permission exists
     const permission = await this.permissionRepository.findOne({ where: { id: permissionId } });
     if (!permission) {
       throw new Error(`Permission with ID ${permissionId} not found`);
     }
 
-    // Delete permission-endpoint relationships
     await this.permissaoEndpointRepository.delete({ permissaoId: permissionId });
-
-    // Delete user-permission relationships
     await this.userPermissionRepository.delete({ permissionId });
-
-    // Finally, delete the permission itself
     await this.permissionRepository.delete({ id: permissionId });
   }
 }

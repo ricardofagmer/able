@@ -27,6 +27,7 @@ export const AuthModalProvider = ({ children }: { children: React.ReactNode }) =
 
 export const useAuthModal = () => {
     const context = useContext(AuthModalContext);
-    if (!context) throw new Error('useAuthModal deve ser usado dentro de AuthModalProvider');
-    return context;
+   if (!context) {
+    throw new Error('useAuthModal must be used within AuthModalProvider');
+  }return context;
 };

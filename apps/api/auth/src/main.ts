@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AllExceptionsFilter, HttpExceptionFilter } from '@able/api-shared';
-import { I18nValidationException, I18nValidationPipe } from 'nestjs-i18n';
+import { I18nValidationPipe } from 'nestjs-i18n';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app/app.module';
