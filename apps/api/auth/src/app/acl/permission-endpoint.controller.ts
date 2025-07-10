@@ -31,8 +31,6 @@ export class PermissionEndpointController {
   async assignPermissionToEndpoint(
     @Body() assignPermissionDto: any
   ): Promise<any> {
-      console.log(assignPermissionDto)
-
     return await this.permissionEndpointService.create(
       assignPermissionDto.name,
       assignPermissionDto.selectedEndpoints || assignPermissionDto.endpointIds,

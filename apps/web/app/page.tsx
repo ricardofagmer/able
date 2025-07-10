@@ -16,7 +16,7 @@ export default function Search() {
             color: 'bg-blue-500'
         },
         {
-            title: 'Permissions',
+            title: 'Permissions Groups',
             description: 'Configure user roles and permissions',
             icon: Shield,
             href: '/permissions',
@@ -58,8 +58,8 @@ export default function Search() {
                                         </CardDescription>
                                     </CardHeader>
                                     <CardContent className="text-center">
-                                        <Button 
-                                            variant="outline" 
+                                        <Button
+                                            variant="outline"
                                             className="w-full group-hover:bg-gray-50"
                                             onClick={() => window.location.href = item.href}
                                         >

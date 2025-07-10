@@ -9,7 +9,6 @@ import {useRouter} from 'next/navigation';
 import {useToast} from '@/hooks/use-toast';
 import {endpointDataAccess, useResource} from "@able/data-access";
 import {Label} from '../../components/ui/label';
-import {Switch} from '../../components/ui/switch';
 
 interface Endpoint {
     id: number;
@@ -17,6 +16,7 @@ interface Endpoint {
     value: string;
     deactivatedAt: string;
 }
+
 
 export default function EndpointsListPage() {
     const router = useRouter();
@@ -36,7 +36,7 @@ export default function EndpointsListPage() {
             try {
                 setIsLoading(true);
                 const resp = await fetchAll();
-                console.log(resp);
+
                 setEndpoints(resp);
             } catch (err) {
                 toast({

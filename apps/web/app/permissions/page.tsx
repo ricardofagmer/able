@@ -10,7 +10,6 @@ import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import {
   permissionDataAccess,
-  PermissionDto,
   CreatePermissionDto,
   UpdatePermissionDto,
   useResource
@@ -43,11 +42,9 @@ export default function PermissionsPage() {
   const router = useRouter();
   const { toast } = useToast();
 
-  // State for permissions list
   const [permissions, setPermissions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // State for create modal
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [createForm, setCreateForm] = useState<CreatePermissionDto>({
     name: '',
@@ -126,7 +123,6 @@ export default function PermissionsPage() {
     }
   };
 
-  // Create modal handlers
   const handleCreateSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!createForm.name.trim()) {
@@ -245,7 +241,6 @@ export default function PermissionsPage() {
     }
   };
 
-  // Toggle handlers for create form
   const handleCreateEndpointToggle = (endpointId: string) => {
     const currentSelected = createForm.selectedEndpoints || [];
     const newSelected = currentSelected.includes(endpointId)
@@ -283,7 +278,6 @@ export default function PermissionsPage() {
     setEditForm(prev => ({ ...prev, selectedUsers: newSelected }));
   };
 
-  // Filtered data for create modal
   const filteredEndpoints = availableEndpoints.filter(endpoint =>
     endpoint.name.toLowerCase().includes(endpointSearch.toLowerCase())
   );
@@ -293,7 +287,6 @@ export default function PermissionsPage() {
     user.email.toLowerCase().includes(userSearch.toLowerCase())
   );
 
-  // Filtered data for edit modal
   const filteredEditEndpoints = availableEndpoints.filter(endpoint =>
     endpoint.name.toLowerCase().includes(editEndpointSearch.toLowerCase())
   );
@@ -328,7 +321,7 @@ export default function PermissionsPage() {
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Permissions Management</h1>
+              <h1 className="text-3xl font-bold text-gray-900">Permissions Group Management</h1>
               <p className="text-gray-600 mt-1">Manage application permissions and access control</p>
             </div>
           </div>
