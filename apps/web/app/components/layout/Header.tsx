@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, ChevronDown, LogOut, Headset } from "lucide-react";
+import { ArrowLeft, ChevronDown, LogOut, Headset, BarChart3, FileText, Settings, Home } from "lucide-react";
 import { Button } from "../ui/button";
 import { JSX, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -103,6 +103,28 @@ const Header = ({ resource }: { resource: string }): JSX.Element => {
                             </>
                         )}
                     </div>
+
+                    {/* Navigation Menu */}
+                    {!resource && (
+                        <nav className="flex items-center space-x-6">
+                            <a href="/" className="flex items-center space-x-2 text-gray-700 hover:text-gray-900 transition-colors">
+                                <Home className="w-4 h-4" />
+                                <span className="text-sm font-medium">Home</span>
+                            </a>
+                            <a href="/dashboard" className="flex items-center space-x-2 text-gray-700 hover:text-gray-900 transition-colors">
+                                <BarChart3 className="w-4 h-4" />
+                                <span className="text-sm font-medium">Dashboard</span>
+                            </a>
+                            <a href="/reports" className="flex items-center space-x-2 text-gray-700 hover:text-gray-900 transition-colors">
+                                <FileText className="w-4 h-4" />
+                                <span className="text-sm font-medium">Reports</span>
+                            </a>
+                            <a href="/cms" className="flex items-center space-x-2 text-gray-700 hover:text-gray-900 transition-colors">
+                                <Settings className="w-4 h-4" />
+                                <span className="text-sm font-medium">CMS</span>
+                            </a>
+                        </nav>
+                    )}
 
                     {user ? (
                         <div className="relative" ref={dropdownRef}>

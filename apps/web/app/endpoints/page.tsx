@@ -110,24 +110,7 @@ export default function EndpointsPage() {
                 />
               </div>
 
-              {/* Permissions Section */}
-              <div className="space-y-2">
-                <button
-                  type="button"
-                  onClick={() => setShowPermissions(!showPermissions)}
-                  className="flex items-center justify-between w-full text-left text-sm font-medium text-gray-700 hover:text-gray-900"
-                >
-                  <span>Permissões</span>
-                  <ChevronDown className={`h-4 w-4 transition-transform ${showPermissions ? 'rotate-180' : ''}`} />
-                </button>
-                {showPermissions && (
-                  <div className="mt-2 p-3 bg-gray-50 rounded border">
-                    <p className="text-sm text-gray-600">
-                      Configure as permissões necessárias para este endpoint.
-                    </p>
-                  </div>
-                )}
-              </div>
+
 
               {/* Action Buttons */}
               <div className="flex justify-end gap-3 pt-4">
