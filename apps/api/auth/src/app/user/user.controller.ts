@@ -4,8 +4,6 @@ import { UserService } from './user.service';
 import {
     UserDto,
     UserCreateResponse,
-    GetUserByIdDto,
-    GetUserByIdResponse,
     ConfirmAccountDto, ResendConfirmationEmailDto
 } from '@able/common';
 

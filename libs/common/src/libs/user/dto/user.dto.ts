@@ -30,12 +30,6 @@ export class UserDto {
     password?: string;
 }
 
-export class GetUserByIdDto {
-    @ApiProperty()
-    @IsNotEmpty()
-    id!: number;
-}
-
 export class UserResponseDto {
     @ApiProperty()
     id!: number;
@@ -55,4 +49,3 @@ export class UserResponseDto {
 }
 
 export type UserCreateResponse = UserResponseDto;
-export type GetUserByIdResponse = UserResponseDto;

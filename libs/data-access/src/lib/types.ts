@@ -5,13 +5,3 @@ export interface QueryOptions {
     sort?: string;
     order?: 'asc' | 'desc';
 }
-
-export interface PaginatedResponse<T> {
-    data: T[];
-    meta: {
-        total: number;
-        page: number;
-        limit: number;
-        totalPages: number;
-    };
-}
