@@ -58,7 +58,7 @@ const Header = ({ resource }: { resource: string }): JSX.Element => {
                             <>
 
                                 <span className="text-xl font-semibold text-gray-900">
-                                    Test: Permissions
+                                    Permissions
                                 </span>
                             </>
 
