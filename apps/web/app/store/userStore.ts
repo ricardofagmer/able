@@ -52,8 +52,6 @@ export const useUserStore = create<UserState>((set, get) => ({
             permissions: permissions || []
         };
 
-        console.log(accountData);
-
         if (typeof window !== 'undefined') {
             localStorage.setItem('ableAccount', JSON.stringify(accountData));
             localStorage.setItem('ableAccessToken', accessToken);

@@ -1,6 +1,5 @@
 'use client';
 
-import Header from '../components/layout/Header';
 import { Settings } from 'lucide-react';
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 

@@ -11,39 +11,70 @@ interface ProtectedRouteProps {
     fallbackPath?: string;
 }
 
-export function ProtectedRoute({ 
-    children, 
-    requiredRoute, 
-    fallbackPath = '/' 
+interface AccountData {
+    id: number;
+    email: string;
+    permissions: string[];
+}
+
+export function ProtectedRoute({
+    children,
+    requiredRoute,
+    fallbackPath = '/'
 }: ProtectedRouteProps) {
-    const { hasRouteAccess, isAuthenticated, loading } = usePermissions();
-    const { account } = useUserStore();
     const router = useRouter();
     const [isChecking, setIsChecking] = useState(true);
+    const [endpoints, setEndpoints] = useState([]);
+    const { account, isAuthenticated } = useUserStore();
+    const [loading, setLoading] = useState(false);
+    const [allow, setAllow] = useState(false);
 
     useEffect(() => {
-        const checkPermission = async () => {
-            // Wait for authentication state to be determined
+        const loadPermissionsFromStorage = () => {
+            if (!isAuthenticated() || !account) {
+                setEndpoints([]);
+                setIsChecking(false);
+                return;
+            }
+
+            try {
+                setLoading(true);
+                const accountData = JSON.parse(account);
+                setEndpoints(accountData.permissions || []);
+            } catch (error) {
+                console.error('Error parsing account data:', error);
+                setEndpoints([]);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadPermissionsFromStorage();
+    }, [account, isAuthenticated]);
+
+    useEffect(() => {
+        const checkPermission = () => {
             if (loading) return;
 
             setIsChecking(false);
 
-            // If user is not authenticated, allow access (they can see the page but won't see protected nav items)
-            if (!isAuthenticated || !account) {
+            if (!isAuthenticated() || !account) {
                 return;
             }
 
-            // If user is authenticated but doesn't have permission, redirect
-            if (!hasRouteAccess(requiredRoute)) {
-                router.push(fallbackPath);
-                return;
+            const hasAccess = endpoints.find(e => e === requiredRoute)
+
+            setAllow(hasAccess);
+
+            if (hasAccess) {
+                router.push(requiredRoute)
             }
         };
 
         checkPermission();
-    }, [hasRouteAccess, isAuthenticated, loading, account, requiredRoute, fallbackPath, router]);
+    }, [endpoints, loading, isAuthenticated, account, requiredRoute, router, fallbackPath]);
 
-    // Show loading state while checking permissions
+
     if (isChecking || loading) {
         return (
             <div className="flex items-center justify-center min-h-screen">
@@ -52,14 +83,15 @@ export function ProtectedRoute({
         );
     }
 
-    // If user is authenticated and doesn't have permission, show access denied
-    if (isAuthenticated && account && !hasRouteAccess(requiredRoute)) {
+    // Only show access denied if user is authenticated but doesn't have permission
+    // For unauthenticated users, we allow them to see the page content
+    if (!isAuthenticated || !account || !allow) {
         return (
             <div className="flex items-center justify-center min-h-screen">
                 <div className="text-center">
                     <h1 className="text-2xl font-bold text-gray-900 mb-4">Acesso Negado</h1>
                     <p className="text-gray-600 mb-6">Você não tem permissão para acessar esta página.</p>
-                    <button 
+                    <button
                         onClick={() => router.push(fallbackPath)}
                         className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
                     >
@@ -68,7 +100,10 @@ export function ProtectedRoute({
                 </div>
             </div>
         );
+
     }
 
+    // Allow access to the page content
+    // If user is not authenticated, they'll see the page but Header will show appropriate navigation
     return <>{children}</>;
 }
