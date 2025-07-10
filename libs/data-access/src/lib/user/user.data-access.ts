@@ -29,6 +29,10 @@ class UserDataAccess extends ServerResourceService<UserDto, UserDto, UserDto> {
         return this.customEndpoint('POST', `resend-confirmation-email`, payload);
     }
 
+    async checkUserExists(email: string): Promise<any> {
+        return this.customEndpoint('POST', 'check-exists', { email });
+    }
+
 }
 
 export const userDataAccess = new UserDataAccess();

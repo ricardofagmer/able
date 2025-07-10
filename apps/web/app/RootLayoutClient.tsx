@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthModalProvider } from "./context/AuthModalContext";
 import I18nProvider from "./i18n/I18nProvider";
 import { useInitUserStore } from "./store/userStore";
+import AuthModal from "./components/auth/AuthModal";
 
 const queryClient = new QueryClient();
 
@@ -24,6 +25,7 @@ export default function RootLayoutClient({
           <TooltipProvider>
             <Toaster />
             <Sonner />
+            <AuthModal />
             {children}
           </TooltipProvider>
         </AuthModalProvider>

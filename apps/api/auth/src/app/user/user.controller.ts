@@ -61,4 +61,11 @@ export class UserController {
         return { message: 'Confirmation email sent' };
     }
 
+    @Post('check-exists')
+    @ApiOperation({ summary: 'Check if user exists by email' })
+    @ApiResponse({ status: 200, description: 'User existence check completed' })
+    async checkUserExists(@Body() data: { email: string }) {
+        return await this.userService.checkUserExists(data.email);
+    }
+
 }

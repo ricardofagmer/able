@@ -8,6 +8,7 @@ import { useUserStore } from "@/store/userStore";
 import { useAuthModal } from "@/context/AuthModalContext";
 import { useHashParams } from "@/hooks/useHashParams";
 import { useClientOnly } from '@/hooks/useClientOnly';
+import { usePermissions } from '@/hooks/usePermissions';
 
 const Header = ({ resource }: { resource: string }): JSX.Element => {
     const { modalType, openModal, closeModal } = useAuthModal();
@@ -17,28 +18,7 @@ const Header = ({ resource }: { resource: string }): JSX.Element => {
     const router = useRouter();
     const { account, logout } = useUserStore();
     const [user, setUser] = useState(null);
-
-    const hash = useHashParams();
-    const isClient = useClientOnly();
-
-    useEffect(() => {
-        if (!isClient) return;
-
-        let token = hash.params.get("token");
-        let userId = hash.params.get("id");
-        let email = hash.params.get("email");
-        let action = hash.params.get("action");
-        console.log("Action:", Array.from(hash.params.entries()));
-
-        if (email && token && action === "confirm-email") {
-            openModal("confirm");
-            hash.clearHashParams();
-
-        } else if (token && userId && action === "reset-password") {
-            openModal("reset");
-            hash.clearHashParams();
-        }
-    }, [openModal, isClient, hash]);
+    const { hasPermission, hasRouteAccess, isAuthenticated } = usePermissions();
 
 
     useEffect(() => {
@@ -79,29 +59,13 @@ const Header = ({ resource }: { resource: string }): JSX.Element => {
             <header className="bg-white border-b border-gray-200 px-6 py-4 fixed top-0 w-full z-10">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
-                        {!resource ? (
                             <>
-                                <div className="w-8 h-8 flex items-center justify-center">
-                                    <img src="/icon.png" alt="logo" />
-                                </div>
+
                                 <span className="text-xl font-semibold text-gray-900">
-                                    ableOnc.
+                                    Test: Permissions
                                 </span>
                             </>
-                        ) : (
-                            <>
-                                <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    onClick={() => router.back()}
-                                >
-                                    <ArrowLeft className="h-5 w-5" />
-                                </Button>
-                                <h1 className="text-lg font-bold">
-                                    Perfil do Paciente
-                                </h1>
-                            </>
-                        )}
+
                     </div>
 
                     {/* Navigation Menu */}
@@ -111,25 +75,30 @@ const Header = ({ resource }: { resource: string }): JSX.Element => {
                                 <Home className="w-4 h-4" />
                                 <span className="text-sm font-medium">Home</span>
                             </a>
-                            <a href="/dashboard" className="flex items-center space-x-2 text-gray-700 hover:text-gray-900 transition-colors">
-                                <BarChart3 className="w-4 h-4" />
-                                <span className="text-sm font-medium">Dashboard</span>
-                            </a>
-                            <a href="/reports" className="flex items-center space-x-2 text-gray-700 hover:text-gray-900 transition-colors">
-                                <FileText className="w-4 h-4" />
-                                <span className="text-sm font-medium">Reports</span>
-                            </a>
-                            <a href="/cms" className="flex items-center space-x-2 text-gray-700 hover:text-gray-900 transition-colors">
-                                <Settings className="w-4 h-4" />
-                                <span className="text-sm font-medium">CMS</span>
-                            </a>
+                            {(hasRouteAccess('/dashboard') || !isAuthenticated) && (
+                                <a href="/dashboard" className="flex items-center space-x-2 text-gray-700 hover:text-gray-900 transition-colors">
+                                    <BarChart3 className="w-4 h-4" />
+                                    <span className="text-sm font-medium">Dashboard</span>
+                                </a>
+                            )}
+                            {(hasRouteAccess('/reports') || !isAuthenticated) && (
+                                <a href="/reports" className="flex items-center space-x-2 text-gray-700 hover:text-gray-900 transition-colors">
+                                    <FileText className="w-4 h-4" />
+                                    <span className="text-sm font-medium">Reports</span>
+                                </a>
+                            )}
+                            {(hasRouteAccess('/cms') || !isAuthenticated) && (
+                                <a href="/cms" className="flex items-center space-x-2 text-gray-700 hover:text-gray-900 transition-colors">
+                                    <Settings className="w-4 h-4" />
+                                    <span className="text-sm font-medium">CMS</span>
+                                </a>
+                            )}
                         </nav>
                     )}
 
                     {user ? (
                         <div className="relative" ref={dropdownRef}>
                             <div className="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 rounded-lg transition-colors">
-                                <Headset className="w-5 h-5 text-gray-700 ml-2" />
                                 <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
                                     <span className="text-sm font-medium text-gray-700">
                                         {user?.email?.charAt(0)?.toUpperCase() || ""}
@@ -166,7 +135,7 @@ const Header = ({ resource }: { resource: string }): JSX.Element => {
                                 onClick={() => openModal("login")}
                                 className="bg-gray-900 rounded-full text-white text-sm font-normal hover:bg-[#97dffc]"
                             >
-                                Fazer login
+                                Login
                             </Button>
                         </div>
                     )}

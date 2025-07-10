@@ -9,7 +9,12 @@ export interface PermissionDto {
     selectedUsers?: string[];
     // API response structure
     permissaoEndpoints?: Array<{
-        endpoint?: { id?: number; [key: string]: any };
+        endpoint?: { 
+            id?: number; 
+            name?: string;
+            value?: string;
+            [key: string]: any 
+        };
         [key: string]: any;
     }>;
     userPermissions?: Array<{

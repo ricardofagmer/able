@@ -1,13 +1,11 @@
 'use client';
 
 import { create } from 'zustand';
-import { AccountRole } from '@able/common';
 import { useEffect } from 'react';
 
 interface User {
     userId: number;
     userEmail: string;
-    userRole: string;
     userName: string;
 }
 
@@ -16,7 +14,7 @@ interface UserState {
     accessToken: string | null;
     refreshToken: string | null;
     logout: () => void;
-    setTokens: (accessToken: string, refreshToken: string, user: { id: number, email: string, role: AccountRole }) => void;
+    setTokens: (accessToken: string, refreshToken: string, user: { id: number, email: string }, permissions?: any[]) => void;
     isAuthenticated: () => boolean;
     initializeFromStorage: () => void;
 }
@@ -48,9 +46,16 @@ export const useUserStore = create<UserState>((set, get) => ({
         set({ account: null, accessToken: null, refreshToken: null });
     },
 
-    setTokens: (accessToken: string, refreshToken: string, user: { id: number, email: string, role: string }) => {
+    setTokens: (accessToken: string, refreshToken: string, user: { id: number, email: string }, permissions?: any[]) => {
+        const accountData = {
+            ...user,
+            permissions: permissions || []
+        };
+
+        console.log(accountData);
+
         if (typeof window !== 'undefined') {
-            localStorage.setItem('ableAccount', JSON.stringify(user));
+            localStorage.setItem('ableAccount', JSON.stringify(accountData));
             localStorage.setItem('ableAccessToken', accessToken);
             localStorage.setItem('ableRefreshToken', refreshToken);
 
@@ -59,7 +64,7 @@ export const useUserStore = create<UserState>((set, get) => ({
         set({
             accessToken,
             refreshToken,
-            account: JSON.stringify(user)
+            account: JSON.stringify(accountData)
         });
     },
 

@@ -2,41 +2,58 @@
 
 import Header from '../components/layout/Header';
 import { Settings } from 'lucide-react';
+import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 
 export default function CMS() {
     return (
-        <div className="min-h-screen bg-gray-50">
-            <Header resource={undefined} />
-            
-            <main className="flex flex-col items-center justify-center px-4 py-16 mt-20">
-                <div className="max-w-2xl w-full text-center">
-                    <div className="w-24 h-24 bg-teal-500 rounded-full flex items-center justify-center mx-auto mb-8">
-                        <Settings className="w-12 h-12 text-white" />
+        <ProtectedRoute requiredRoute="/cms">
+            <div className="min-h-screen bg-gradient-to-br from-purple-50 to-violet-100 p-8">
+                <div className="max-w-4xl mx-auto">
+                    <div className="text-center mb-8">
+                        <div className="inline-flex items-center justify-center w-20 h-20 bg-purple-600 rounded-full mb-6">
+                            <Settings className="w-10 h-10 text-white" />
+                        </div>
+                        <h1 className="text-4xl font-bold text-gray-900 mb-4">Bem-vindo ao CMS</h1>
+                        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                            Gerencie conteúdo, configurações e administre seu sistema de forma eficiente.
+                        </p>
                     </div>
-                    
-                    <h1 className="text-4xl font-bold text-gray-900 mb-4">
-                        Welcome to CMS
-                    </h1>
-                    
-                    <p className="text-lg text-gray-600 mb-8">
-                        Content Management System. Manage your website content, 
-                        create and edit pages, and organize your digital assets.
-                    </p>
-                    
-                    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
-                        <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                            CMS Features
-                        </h2>
-                        <ul className="text-left text-gray-600 space-y-2">
-                            <li>• Content creation and editing</li>
-                            <li>• Media library management</li>
-                            <li>• Page template system</li>
-                            <li>• SEO optimization tools</li>
-                            <li>• Content workflow management</li>
-                        </ul>
+
+                    <div className="bg-white rounded-lg shadow-lg p-8">
+                        <h2 className="text-2xl font-semibold text-gray-800 mb-6">Recursos do CMS</h2>
+                        <div className="grid md:grid-cols-2 gap-6">
+                            <div className="space-y-4">
+                                <div className="flex items-center space-x-3">
+                                    <div className="w-2 h-2 bg-purple-600 rounded-full"></div>
+                                    <span className="text-gray-700">Gerenciamento de conteúdo</span>
+                                </div>
+                                <div className="flex items-center space-x-3">
+                                    <div className="w-2 h-2 bg-purple-600 rounded-full"></div>
+                                    <span className="text-gray-700">Editor de páginas</span>
+                                </div>
+                                <div className="flex items-center space-x-3">
+                                    <div className="w-2 h-2 bg-purple-600 rounded-full"></div>
+                                    <span className="text-gray-700">Controle de usuários</span>
+                                </div>
+                            </div>
+                            <div className="space-y-4">
+                                <div className="flex items-center space-x-3">
+                                    <div className="w-2 h-2 bg-purple-600 rounded-full"></div>
+                                    <span className="text-gray-700">Configurações do sistema</span>
+                                </div>
+                                <div className="flex items-center space-x-3">
+                                    <div className="w-2 h-2 bg-purple-600 rounded-full"></div>
+                                    <span className="text-gray-700">Backup e restauração</span>
+                                </div>
+                                <div className="flex items-center space-x-3">
+                                    <div className="w-2 h-2 bg-purple-600 rounded-full"></div>
+                                    <span className="text-gray-700">Logs de auditoria</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </main>
-        </div>
+            </div>
+        </ProtectedRoute>
     );
 }

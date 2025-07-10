@@ -74,7 +74,7 @@ export class UserPermissionService {
   async getUserPermissions(userId: string): Promise<Permission[]> {
     const userPermissions = await this.userPermissionRepository.find({
       where: { userId: +userId }, // Keep as string since the entity field is varchar
-      relations: ['permission'],
+      relations: ['permission', 'permission.permissaoEndpoints', 'permission.permissaoEndpoints.endpoint'],
     });
 
     return userPermissions.map(up => up.permission);

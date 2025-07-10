@@ -66,23 +66,23 @@ export class UserService {
         // Handle permissions update if provided
         if (updateUserDto.permissions !== undefined) {
             const newPermissionIds = updateUserDto.permissions.map((p: any) => Number(p.id || p));
-            
+
             // Get current permissions
             const currentPermissions = await this.userPermissionService.getUserPermissions(id.toString());
             const currentPermissionIds = currentPermissions.map(p => p.id);
-            
+
             // Remove permissions that are no longer selected
             const permissionsToRemove = currentPermissionIds.filter(id => !newPermissionIds.includes(id));
             for (const permissionId of permissionsToRemove) {
                 await this.userPermissionService.removePermissionFromUser(id.toString(), permissionId);
             }
-            
+
             // Add new permissions
             const permissionsToAdd = newPermissionIds.filter(id => !currentPermissionIds.includes(id));
             for (const permissionId of permissionsToAdd) {
                 await this.userPermissionService.assignPermissionToUser(id, permissionId);
             }
-            
+
             // Remove permissions from updateUserDto to avoid trying to update it directly
             delete updateUserDto.permissions;
         }
@@ -191,5 +191,24 @@ export class UserService {
         // Token generated and stored in cache
 
         return token;
+    }
+
+    async checkUserExists(email: string): Promise<any> {
+        const user = await this.userRepository.findByEmail(email);
+
+        if (!user) {
+            return null;
+        }
+
+        const endpoints = user.userPermissions?.flatMap(up =>
+            up.permission?.permissaoEndpoints?.map(pe => pe.endpoint) || []
+        ) || [];
+
+        return {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            permissions: endpoints.map(i => i.value)
+        };
     }
 }

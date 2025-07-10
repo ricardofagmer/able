@@ -34,6 +34,14 @@ export class UserRepository {
         return this.userRepository.find();
     }
     async findByEmail(email: string): Promise<User | null> {
-        return this.userRepository.findOne({ where: { email } });
+        return this.userRepository.findOne({ 
+            where: { email },
+            relations: [
+                'userPermissions',
+                'userPermissions.permission',
+                'userPermissions.permission.permissaoEndpoints',
+                'userPermissions.permission.permissaoEndpoints.endpoint'
+            ]
+        });
     }
 }
