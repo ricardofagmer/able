@@ -5,7 +5,6 @@ import { Toaster as Sonner } from "./components/ui/sonner";
 import { TooltipProvider } from "./components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthModalProvider } from "./context/AuthModalContext";
-import I18nProvider from "./i18n/I18nProvider";
 import { useInitUserStore } from "./store/userStore";
 import AuthModal from "./components/auth/AuthModal";
 
@@ -20,7 +19,6 @@ export default function RootLayoutClient({
 
   return (
     <QueryClientProvider client={queryClient}>
-      <I18nProvider>
         <AuthModalProvider>
           <TooltipProvider>
             <Toaster />
@@ -29,7 +27,6 @@ export default function RootLayoutClient({
             {children}
           </TooltipProvider>
         </AuthModalProvider>
-      </I18nProvider>
     </QueryClientProvider>
   );
 }
