@@ -29,5 +29,5 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY --from=builder /app/dist/apps/api/auth ./dist
 COPY --from=builder /app/dist/libs ./dist
 
-EXPOSE 3001
+EXPOSE 3000
 CMD ["sh", "-c", "node ./dist/main.js"]

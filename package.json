@@ -8,6 +8,8 @@
     "nx-build": "nx affected:build",
     "affected:lint": "nx affected:lint",
     "build": "nx run-many --target=build --all",
+    "build-api": "nx build auth --with-deps",
+    "build-web": "nx build web --with-deps",
     "start:all": "nx run-many --target=serve --projects=auth,web --parallel --verbose",
     "start:web": "nx serve web --watch",
     "start": "node dist/apps/api/main.js",
