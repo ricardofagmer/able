@@ -1,12 +1,15 @@
 GitHub Repository: https://github.com/ricardofagmer/able
 
 
-# This project is a simple sample of how to handle permission with users and enpoints;
+# This project is a simple sample of how to handle permission with users and endpoints;
 
 - 1 docker-compose up -d 
 - 2 pnpm install
 - 3 pnpm run start:api
 - 4 pnpm run start:web
+
+# Deployed on AWS using nginx:
+- http://34.205.142.53:4200
 
 **In the webapp:**
 - Register a new endpoint, _Note: The route needs to exist so if you want to test the permission, or you can create a new route/page, or you can work with the existent one_: `/dashboard, /report, /cms`
