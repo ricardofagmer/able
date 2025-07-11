@@ -13,11 +13,14 @@ interface EndpointFormData {
   name: string;
   value: string;
 }
+const ROUTE_PATTERN = /^\/([a-z0-9]+|:[a-zA-Z_][a-zA-Z0-9_]*)(\/([a-z0-9]+|:[a-zA-Z_][a-zA-Z0-9_]*)?)*\/?$/;
 
 export default function EndpointsPage() {
   const router = useRouter();
   const { toast } = useToast();
-  const [formData, setFormData] = useState<EndpointFormData>({
+  const [error, setError] = useState('');
+
+    const [formData, setFormData] = useState<EndpointFormData>({
     name: '',
     value: ''
   });
@@ -30,6 +33,16 @@ export default function EndpointsPage() {
       [field]: value
     }));
   };
+
+    const handleError = (field, value) => {
+        setFormData((prev) => ({ ...prev, [field]: value }));
+
+        if (!ROUTE_PATTERN.test(value)) {
+            setError('It must be like "/dashboard"');
+        } else {
+            setError('');
+        }
+    };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,6 +97,7 @@ export default function EndpointsPage() {
                   value={formData.name}
                   onChange={(e) => handleInputChange('name', e.target.value)}
                   className="w-full"
+                  placeholder="My Endpoint"
                   required
                 />
               </div>
@@ -97,10 +111,14 @@ export default function EndpointsPage() {
                   id="url"
                   type="text"
                   value={formData.value}
-                  onChange={(e) => handleInputChange('value', e.target.value)}
+                  onChange={(e) => handleError('value', e.target.value)}
                   className="w-full"
+                  placeholder="/dashboard"
+                  pattern={ROUTE_PATTERN.source}
                   required
                 />
+                  {error && <p className="text-red-600 text-sm mt-1">{error}</p>}
+
               </div>
 
 
