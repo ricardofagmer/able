@@ -19,23 +19,4 @@ services:
             POSTGRES_PASSWORD: able
             POSTGRES_DB: able
     
-    api:
-        build:
-            context: .
-            dockerfile: docker/Api.Dockerfile
-        ports:
-            - "3000:3000"
-        depends_on:
-            - postgres
-        environment:
-            - DATABASE_URL=postgresql://able:able@postgres:5432/able
-    
-    web:
-        build:
-            context: .
-            dockerfile: docker/Web.Dockerfile
-        ports:
-            - "8080:8080"
-        depends_on:
-            - postgres
-            - api
+ 
