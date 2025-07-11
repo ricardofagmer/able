@@ -35,7 +35,6 @@ export const appSchema = z.object({
     JWT_REFRESH_SECRET: z.string(),
     JWT_REFRESH_EXPIRES_IN: z.string().default('4days'),
     DEFAULT_LANGUAGE: z.string().default('en'),
-    I18N_PATH: z.string(),
     MASTER_NODE: z.coerce.boolean().default(false),
     THROTTLER_TTL: z.coerce.number().positive().int().default(60),
     THROTTLER_LIMIT: z.coerce.number().positive().int().default(65535),

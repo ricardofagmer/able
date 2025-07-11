@@ -17,7 +17,6 @@ export const envFactory = (): Env => {
             THROTTLER_TTL: process.env['THROTTLER_TTL'] as any,
             THROTTLER_LIMIT: process.env['THROTTLER_LIMIT'] as any,
             DEFAULT_LANGUAGE: process.env['DEFAULT_LANGUAGE'] as any,
-            I18N_PATH: process.env['I18N_PATH'] as any,
             PROJECT_NAME: process.env['PROJECT_NAME'] as any,
             WEB_HOST: process.env['WEB_HOST'] as any,
         },
