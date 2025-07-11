@@ -26,9 +26,8 @@ RUN npm install -g pnpm && \
     pnpm add tslib
 
 COPY --from=deps /app/node_modules ./node_modules
-COPY --from=builder /app/dist/apps/api/storage ./dist
+COPY --from=builder /app/dist/apps/api/auth ./dist
 COPY --from=builder /app/dist/libs ./dist
-COPY --from=builder /app/dist/migrations ./dist/migrations/
 
 EXPOSE 3001
-CMD ["sh", "-c", "node ./dist/migrations/lib/main.js && node ./dist/main.js"]
+CMD ["sh", "-c", "node ./dist/main.js"]
