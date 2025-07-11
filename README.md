@@ -1,7 +1,7 @@
 GitHub Repository: https://github.com/ricardofagmer/able
 
 
-# This project is a simple sample of how to handle permission with users and endpoints;
+# This project is a simple sample of how to handle permissions with users and endpoints;
 
 - 1 docker-compose up -d 
 - 2 pnpm install
