@@ -69,7 +69,6 @@ export default function UsersListPage() {
             const permissions = await permissionDataAccess.getAll();
             setAvailablePermissions(permissions || []);
 
-            // Fetch permissions for each user
             const usersWithPermissions = await fetchAll();
 
             setUsers(usersWithPermissions);
@@ -102,14 +101,12 @@ export default function UsersListPage() {
             selectedPermissions: Array.isArray(user.permissions) ? user.permissions.map(p => p.id.toString()) : []
         });
 
-        console.log(user)
     };
 
     const handleSaveEdit = async () => {
         if (!editingUser) return;
 
         try {
-            // Update user with all data including permissions
             const updatedUser = await update(editingUser.id, {
                 name: editForm.name,
                 email: editForm.email,
@@ -117,11 +114,9 @@ export default function UsersListPage() {
                 permissions: editForm.selectedPermissions.map(id => ({ id: Number(id) }))
             });
 
-            // Fetch updated user with permissions to get the complete data
             const updatedUserWithPermissions = await userDataAccess.getById(editingUser.id);
             const updatedPermissions = updatedUserWithPermissions?.permissions || [];
 
-            // Update user in state with new permissions
             setUsers(prev => prev.map(u =>
                 u.id === editingUser.id ? {
                     ...(updatedUser as User),
@@ -132,7 +127,7 @@ export default function UsersListPage() {
 
             toast({
                 title: "Success",
-                description: `User "${editForm.name}" updated successfully`,
+                description: `User "${editForm.name}" updated successfully, Do Logout and Login again to see the changes`,
             });
 
             setEditingUser(null);
