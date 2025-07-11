@@ -2,11 +2,14 @@
 
 import { Settings } from 'lucide-react';
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
+import Header from "@/components/layout/Header";
 
 export default function CMS() {
     return (
         <ProtectedRoute requiredRoute="/cms">
-            <div className="min-h-screen bg-gradient-to-br from-purple-50 to-violet-100 p-8">
+            <Header resource={undefined} />
+            <div className="min-h-screen bg-gradient-to-br from-purple-50 to-violet-100 p-8 mt-16">
+
                 <div className="max-w-4xl mx-auto">
                     <div className="text-center mb-8">
                         <div className="inline-flex items-center justify-center w-20 h-20 bg-purple-600 rounded-full mb-6">
