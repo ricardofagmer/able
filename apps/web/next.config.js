@@ -10,7 +10,7 @@ const withTM = require('next-transpile-modules')([
 ]);
 
 const nextConfig = {
-  // Remove: output: 'export',
+  output: 'export',
   distDir: '../../dist/apps/web',
   trailingSlash: true,
   images: {
